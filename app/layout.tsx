@@ -6,10 +6,6 @@ import Script from "next/script";
 import { connection } from "next/server";
 import { ScrollLockFix } from "@/components/scroll-lock-fix";
 
-type Props = {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-};
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -22,16 +18,7 @@ export const viewport: Viewport = {
   ],
 };
 
-export async function generateMetadata({
-  searchParams,
-}: Props): Promise<Metadata> {
-  const params = searchParams ? await searchParams : undefined;
-  const ref = (params?.ref as string) ?? "";
-
-  // Build the dynamic image URL (works locally & in production)
-  const base = process.env.NEXT_PUBLIC_BASE_URL ?? "https://qunt-edge.vercel.app";
-  const ogUrl = `${base}/api/og${ref ? `?ref=${encodeURIComponent(ref)}` : ""}`;
-
+export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Qunt Edge",
     description: "Next generation trading dashboard",
@@ -50,7 +37,7 @@ export async function generateMetadata({
         "Qunt Edge is a next generation trading dashboard that provides real-time insights and analytics for traders.",
       images: [
         {
-          url: ref ? ogUrl : "/opengraph-image.png", // dynamic when ref exists
+          url: "/opengraph-image.png",
           width: 1200,
           height: 630,
           alt: "Qunt Edge Open Graph Image",
@@ -63,7 +50,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: "Qunt Edge",
       description: "Next generation trading dashboard",
-      images: [ref ? ogUrl : "/twitter-image.png"],
+      images: ["/twitter-image.png"],
     },
 
     // ---------- ICONS ----------

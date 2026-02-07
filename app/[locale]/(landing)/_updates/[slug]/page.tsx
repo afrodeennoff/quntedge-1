@@ -11,18 +11,11 @@ import { getStaticParams as getLocaleStaticParams } from "@/locales/server";
 import { MdxSidebar } from "@/components/mdx-sidebar";
 import { UpdatesNavigation } from "@/components/updates-navigation";
 
-type ParamsInput =
-  | {
-      slug: string;
-      locale: string;
-    }
-  | Promise<{
-      slug: string;
-      locale: string;
-    }>;
-
 interface PageProps {
-  params: ParamsInput;
+  params: Promise<{
+    slug: string;
+    locale: string;
+  }>;
 }
 
 export const dynamic = "force-static";
@@ -50,7 +43,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   try {
-    const resolvedParams = await Promise.resolve(params);
+    const resolvedParams = await params;
     if (!resolvedParams || !resolvedParams.slug || !resolvedParams.locale) {
       return {
         title: "Not Found",
@@ -136,7 +129,7 @@ async function getPageData(slug: string, locale: string) {
 }
 
 export default async function Page({ params }: PageProps) {
-  const resolvedParams = await Promise.resolve(params);
+  const resolvedParams = await params;
   if (!resolvedParams || !resolvedParams.slug || !resolvedParams.locale) {
     notFound();
   }
