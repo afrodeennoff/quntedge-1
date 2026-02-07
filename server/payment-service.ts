@@ -3,6 +3,7 @@ import { whop } from '@/lib/whop'
 import { logger } from '@/lib/logger'
 import crypto from 'crypto'
 import { PromotionType, TransactionStatus, TransactionType, InvoiceStatus } from '@/prisma/generated/prisma'
+import type { Prisma } from '@/prisma/generated/prisma'
 
 export interface PlanConfig {
   id: string
@@ -180,7 +181,7 @@ export class PaymentService {
     currency?: string
     type?: TransactionType
     status?: TransactionStatus
-    metadata?: Record<string, unknown>
+    metadata?: Prisma.InputJsonValue
   }): Promise<{ success: boolean; transactionId?: string; error?: string }> {
     try {
       const transaction = await prisma.paymentTransaction.create({
@@ -193,7 +194,7 @@ export class PaymentService {
           currency: data.currency || 'USD',
           type: data.type || TransactionType.SUBSCRIPTION,
           status: data.status || TransactionStatus.PENDING,
-          metadata: data.metadata || {},
+          metadata: data.metadata,
         },
       })
 
@@ -218,7 +219,7 @@ export class PaymentService {
     amountDue: number
     currency?: string
     dueDate?: Date
-    lines?: unknown[]
+    lines?: Prisma.InputJsonValue
     invoicePdf?: string
     hostedInvoiceUrl?: string
   }): Promise<{ success: boolean; invoiceId?: string; error?: string }> {
@@ -232,7 +233,7 @@ export class PaymentService {
           amountDue: data.amountDue,
           currency: data.currency || 'USD',
           dueDate: data.dueDate,
-          lines: data.lines || [],
+          lines: data.lines ?? [],
           invoicePdf: data.invoicePdf,
           hostedInvoiceUrl: data.hostedInvoiceUrl,
           status: 'OPEN',

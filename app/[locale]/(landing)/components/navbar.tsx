@@ -56,9 +56,7 @@ export default function Navbar() {
   const isHomePath = useMemo(() => pathname === '/' || /^\/[a-z]{2}$/.test(pathname), [pathname])
 
   const isActive = (href: string): boolean => {
-    if (href.startsWith('/#')) {
-      return isHomePath
-    }
+    if (href.startsWith('/#')) return isHomePath
     const normalized = href.split('#')[0]
     return pathname === normalized || pathname.endsWith(normalized)
   }
@@ -77,10 +75,8 @@ export default function Navbar() {
       href={link.href}
       onClick={() => setMobileOpen(false)}
       className={cn(
-        mobile
-          ? 'block rounded-xl px-3 py-2.5 text-sm font-medium'
-          : 'rounded-lg px-3 py-2 text-[11px] font-semibold',
-        'transition-colors',
+        mobile ? 'block rounded-xl px-3 py-2.5 text-sm font-medium' : 'rounded-lg px-3 py-2 text-[11px] font-semibold',
+        'transition-colors duration-150',
         isActive(link.href)
           ? 'bg-primary/12 text-primary'
           : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
@@ -94,7 +90,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="container-fluid pt-3 sm:pt-4">
         <motion.div
-          initial={{ y: -10, opacity: 0 }}
+          initial={{ y: -12, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className={cn(
@@ -114,13 +110,13 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <nav className="ml-4 hidden items-center gap-1 lg:flex">
+          <nav className="mx-auto hidden items-center gap-1 xl:flex">
             {MAIN_LINKS.map((link) => (
               <NavItem key={link.href} link={link} />
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+          <div className="ml-auto flex items-center gap-1.5 sm:gap-2 xl:ml-0">
             <LanguageSelector triggerClassName="h-9 w-9 rounded-xl hover:bg-muted/70" />
 
             <Popover modal>
@@ -149,7 +145,7 @@ export default function Navbar() {
 
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="h-9 w-9 rounded-xl px-0 lg:hidden hover:bg-muted/70">
+                <Button variant="ghost" className="h-9 w-9 rounded-xl px-0 xl:hidden hover:bg-muted/70">
                   <Menu className="h-4.5 w-4.5" />
                   <span className="sr-only">{t('landing.navbar.openMenu')}</span>
                 </Button>

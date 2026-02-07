@@ -158,6 +158,10 @@ export default function Navbar() {
           </div>
         </div>
 
+        <div className="md:hidden px-4 pb-3">
+          <PnLSummary className="w-full" />
+        </div>
+
         {/* Dynamic Filters Bar */}
         <AnimatePresence>
           <div className="px-8 pb-3 flex flex-wrap gap-2">

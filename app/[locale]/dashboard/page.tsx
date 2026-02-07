@@ -5,6 +5,7 @@ import { TradeTableReview } from "./components/tables/trade-table-review";
 import { AccountsOverview } from "./components/accounts/accounts-overview";
 import WidgetCanvas from "./components/widget-canvas";
 import { ChartTheFuturePanel } from "./components/chart-the-future-panel";
+import { QuickActionCards } from "./components/quick-action-cards";
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { clearReferralCode } from "@/lib/referral-storage";
@@ -43,10 +44,10 @@ export default function Home() {
         </TabsContent>
 
         <TabsContent value="widgets" className="px-4 mt-2">
+          <QuickActionCards />
           <WidgetCanvas />
         </TabsContent>
       </Tabs>
     </div>
   );
 }
-

@@ -54,6 +54,7 @@ import { useTickDetailsStore } from "@/store/tick-details-store";
 import { useFinancialEventsStore } from "@/store/financial-events-store";
 import { useTradesStore } from "@/store/trades-store";
 import { getTradesCache, setTradesCache } from "@/lib/indexeddb/trades-cache";
+import { generateMockTrades } from "@/lib/mock-trades";
 import { endOfDay, isValid, parseISO, set, startOfDay } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import { calculateStatistics, formatCalendarData } from "@/lib/utils";
@@ -482,14 +483,22 @@ export const DataProvider: React.FC<{
         } else {
           const paginatedTrades = await getTradesAction(userId, 1, 50, false);
           const safeTrades = Array.isArray(paginatedTrades.trades) ? paginatedTrades.trades : [];
-          setTrades(safeTrades);
-          setTradesCache(userId, safeTrades).catch((err) =>
+          const tradesToUse =
+            safeTrades.length > 0 ? safeTrades : generateMockTrades(userId);
+          setTrades(tradesToUse);
+          setTradesCache(userId, tradesToUse).catch((err) =>
             console.error("[DataProvider] Failed to cache trades in IndexedDB (loadData)", err),
           );
         }
       } else {
+        const userId = await getUserId();
         const paginatedTrades = await getTradesAction();
-        setTrades(Array.isArray(paginatedTrades.trades) ? paginatedTrades.trades : []);
+        const safeTrades = Array.isArray(paginatedTrades.trades) ? paginatedTrades.trades : [];
+        const tradesToUse =
+          process.env.NODE_ENV === "development" && userId && safeTrades.length === 0
+            ? generateMockTrades(userId)
+            : safeTrades;
+        setTrades(tradesToUse);
       }
 
       // Step 3: Fetch user data
@@ -617,11 +626,15 @@ export const DataProvider: React.FC<{
 
         const paginatedTrades = await getTradesAction(userId, 1, 50, force);
         const safeTrades = Array.isArray(paginatedTrades.trades) ? paginatedTrades.trades : [];
-        setTrades(safeTrades);
+        const tradesToUse =
+          process.env.NODE_ENV === "development" && safeTrades.length === 0
+            ? generateMockTrades(userId)
+            : safeTrades;
+        setTrades(tradesToUse);
 
         if (process.env.NODE_ENV === "development") {
           // Best-effort cache write; do not block UI on failure
-          setTradesCache(userId, safeTrades).catch((err) =>
+          setTradesCache(userId, tradesToUse).catch((err) =>
             console.error("[refreshTradesOnly] Failed to cache trades in IndexedDB", err),
           );
         }
