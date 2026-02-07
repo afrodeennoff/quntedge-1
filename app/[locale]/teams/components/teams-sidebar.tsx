@@ -1,15 +1,17 @@
 "use client"
 
-import { LayoutDashboard, Users, BarChart3, TrendingUp, Settings, LogOut, Globe, ArrowLeft } from "lucide-react"
+import { LayoutDashboard, Users, BarChart3, TrendingUp, Globe, ArrowLeft } from "lucide-react"
 import { useUserStore } from "@/store/user-store"
 import { UnifiedSidebar, UnifiedSidebarItem } from "@/components/ui/unified-sidebar"
-import { useParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 
 export function TeamsSidebar() {
   const user = useUserStore(state => state.supabaseUser)
-
-  const params = useParams()
-  const slug = params?.slug as string | undefined
+  const timezone = useUserStore(state => state.timezone)
+  const setTimezone = useUserStore(state => state.setTimezone)
+  const pathname = usePathname()
+  const match = pathname.match(/^\/teams\/dashboard\/([^/]+)(?:\/|$)/)
+  const slug = pathname.includes("/teams/dashboard/trader/") ? undefined : match?.[1]
 
   const navItems: UnifiedSidebarItem[] = [
     {
@@ -74,9 +76,9 @@ export function TeamsSidebar() {
       user={user?.user_metadata}
       showSubscription={false}
       timezone={{
-        value: 'UTC',
+        value: timezone,
         options: timezones,
-        onChange: () => { }
+        onChange: setTimezone
       }}
       onLogout={handleLogout}
     />

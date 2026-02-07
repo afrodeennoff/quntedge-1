@@ -1,7 +1,8 @@
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
 export {
   default,
-  dynamic,
-  dynamicParams,
   generateMetadata,
   generateStaticParams,
-} from "../../_updates/[slug]/page"
+} from "../../_updates/[slug]/page";
