@@ -30,7 +30,6 @@ import {
   ChevronRight
 } from 'lucide-react'
 import { useTheme } from '@/context/theme-provider'
-import Footer from '../../(landing)/components/footer'
 import Image from 'next/image'
 
 export default function TeamPage() {
@@ -275,12 +274,6 @@ export default function TeamPage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="w-full py-6 md:py-12 lg:py-16 xl:py-24">
-          <div className="container px-4 md:px-6 mx-auto">
-            <Footer />
-          </div>
-        </footer>
       </main>
     </div>
   )

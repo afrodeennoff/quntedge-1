@@ -7,7 +7,7 @@ interface CTAProps {
 
 const CTA: React.FC<CTAProps> = ({ onStart }) => {
     return (
-        <section className="py-fluid-xl px-fluid-sm bg-[#050505]">
+        <section className="py-fluid-xl bg-[#050505]">
             <div className="container-fluid max-w-4xl text-center">
                 <h2 className="text-fluid-3xl md:text-fluid-5xl font-semibold tracking-tighter mb-fluid-sm text-white">
                     The market rewards <br />

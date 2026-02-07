@@ -18,7 +18,7 @@ export default function Footer() {
     company: [
       { name: t('footer.company.about'), href: '/about' },
       { name: 'Community', href: '/community' },
-      { name: 'Roadmap', href: '/#roadmap' },
+      { name: 'Roadmap', href: '/updates' },
       { name: 'FAQ', href: '/faq' },
     ],
     legal: [

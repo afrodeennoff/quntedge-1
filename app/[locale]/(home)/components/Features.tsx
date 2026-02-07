@@ -77,12 +77,12 @@ const Features: React.FC = () => {
     ];
 
     return (
-        <section id="features" className="py-fluid-xl px-fluid-sm bg-[#030303] relative border-t border-white/5">
+        <section id="features" className="py-fluid-xl bg-[#030303] relative border-t border-white/5">
             <div id="data-import" className="absolute -top-32" />
             <div id="daily-performance" className="absolute -top-32" />
             <div id="ai-journaling" className="absolute -top-32" />
             <div className="container-fluid">
-                <div className="mb-fluid-xl flex flex-col md:flex-row justify-between items-end gap-fluid-sm">
+                <div className="mb-fluid-xl flex flex-col md:flex-row justify-between items-start md:items-end gap-fluid-sm">
                     <div>
                         <motion.h2
                             initial={{ opacity: 0, x: -15 }}

@@ -44,7 +44,7 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
     };
 
     return (
-        <section ref={ref} className="relative pt-48 pb-32 px-6 overflow-hidden min-h-screen flex flex-col justify-center items-center text-center">
+        <section ref={ref} className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center text-center pt-32 pb-20 sm:pt-40 sm:pb-28">
             {/* Background Ambience */}
             <motion.div style={{ opacity }} className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
@@ -111,8 +111,8 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
             </motion.div>
 
             {/* Decorative vertical lines */}
-            <div className="absolute top-0 left-12 w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"></div>
-            <div className="absolute top-0 right-12 w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"></div>
+            <div className="hidden md:block absolute top-0 left-12 w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"></div>
+            <div className="hidden md:block absolute top-0 right-12 w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"></div>
         </section>
     );
 };

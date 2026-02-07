@@ -211,23 +211,16 @@ function WidgetWrapper({ children, onRemove, onChangeSize, isCustomizing, size, 
   )
 }
 
-import { Toolbar } from './toolbar'
 
 export default function WidgetCanvas() {
   const {
     isCustomizing,
-    setIsCustomizing,
-    toggleCustomizing,
     layouts,
     currentLayout,
-    activeLayout,
     handleLayoutChange,
     removeWidget,
     changeWidgetSize,
-    removeAllWidgets,
-    restoreDefaultLayout,
-    isMobile,
-    addWidget
+    isMobile
   } = useDashboard()
 
   const ResponsiveGridLayout = useMemo(() => WidthProvider(Responsive), [])
@@ -310,15 +303,6 @@ export default function WidgetCanvas() {
             })}
           </ResponsiveGridLayout>
 
-          {/* Floating Toolbar for customization */}
-          <Toolbar
-            onAddWidget={addWidget}
-            isCustomizing={isCustomizing}
-            onEditToggle={toggleCustomizing}
-            currentLayout={layouts}
-            onRemoveAll={removeAllWidgets}
-            onRestoreDefaults={restoreDefaultLayout}
-          />
         </div>
       )}
     </div>

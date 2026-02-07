@@ -35,7 +35,7 @@ const AnalysisDemo: React.FC = () => {
     }, []);
 
     return (
-        <section id="performance-visualization" className="py-fluid-xl px-fluid-sm relative bg-[#050505] border-t border-white/5">
+        <section id="performance-visualization" className="py-fluid-xl relative bg-[#050505] border-t border-white/5">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
 
             <div className="container-fluid relative z-10">

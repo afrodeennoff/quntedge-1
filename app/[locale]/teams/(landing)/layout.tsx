@@ -1,6 +1,5 @@
 
-import { AuthProfileButton } from "../components/auth-profile-button";
-import TeamNavbar from "../components/team-navbar";
+import MarketingLayoutShell from "../../(landing)/components/marketing-layout-shell";
 import { Metadata } from 'next';
 
 type Locale = 'en' | 'fr';
@@ -27,14 +26,10 @@ export default async function TeamLayout({
 }
 ) {
   return (
-    <div className="px-2 sm:px-6 lg:px-32">
-      <div className="flex justify-between items-center py-4">
-      <TeamNavbar />
-      <AuthProfileButton />
-      </div>
-      <div className="mt-8 sm:mt-20 mx-auto">
+    <MarketingLayoutShell contentClassName="w-full">
+      <div>
         {children}
       </div>
-    </div>
+    </MarketingLayoutShell>
   );
 }

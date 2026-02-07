@@ -5,9 +5,60 @@ import { geolocation } from "@vercel/functions"
 import { User } from "@supabase/supabase-js"
 
 const MAINTENANCE_MODE = false
+const SUPPORTED_LOCALES = ["en", "fr", "de", "es", "it", "pt", "vi", "hi", "ja", "zh", "yo"]
+
+type RouteAlias = {
+  pathname: string
+  hash?: string
+}
+
+const ROUTE_ALIASES: Record<string, RouteAlias> = {
+  "/porpfirm": { pathname: "/propfirms" },
+  "/propfirm": { pathname: "/propfirms" },
+  "/prop firms catalogue": { pathname: "/propfirms" },
+  "/prop-firms-catalogue": { pathname: "/propfirms" },
+  "/propfirm-catalogue": { pathname: "/propfirms" },
+  "/support center": { pathname: "/support" },
+  "/support-center": { pathname: "/support" },
+  "/roadmap": { pathname: "/updates" },
+  "/features": { pathname: "/", hash: "features" },
+}
+
+const CANONICAL_PUBLIC_PATHS = new Set([
+  "/about",
+  "/pricing",
+  "/propfirms",
+  "/teams",
+  "/support",
+  "/community",
+  "/updates",
+  "/faq",
+  "/privacy",
+  "/terms",
+  "/disclaimers",
+])
+
+function safeDecode(pathname: string): string {
+  try {
+    return decodeURIComponent(pathname)
+  } catch {
+    return pathname
+  }
+}
+
+function normalizePath(pathname: string): string {
+  const decoded = safeDecode(pathname)
+    .replace(/\/+/g, "/")
+    .trim()
+  const noTrailingSlash = decoded.endsWith("/") && decoded !== "/"
+    ? decoded.slice(0, -1)
+    : decoded
+
+  return (noTrailingSlash || "/").toLowerCase()
+}
 
 const I18nMiddleware = createI18nMiddleware({
-  locales: ["en", "fr", "de", "es", "it", "pt", "vi", "hi", "ja", "zh", "yo"],
+  locales: SUPPORTED_LOCALES,
   defaultLocale: "en",
   urlMappingStrategy: "redirect", // Aligned with 'Actual URL: /en/pricing' spec
 })
@@ -118,6 +169,31 @@ export default async function middleware(req: NextRequest) {
   // Optimization: If i18n wants a redirect (e.g. locale prefixing), return early
   if (response.status >= 300 && response.status < 400) {
     return response
+  }
+
+  const pathSegments = pathname.split("/").filter(Boolean)
+  const firstSegment = pathSegments[0]?.toLowerCase()
+
+  if (firstSegment && SUPPORTED_LOCALES.includes(firstSegment)) {
+    const localePrefix = `/${firstSegment}`
+    const localizedPath = pathSegments.length > 1 ? `/${pathSegments.slice(1).join("/")}` : "/"
+    const normalizedLocalizedPath = normalizePath(localizedPath)
+
+    const alias = ROUTE_ALIASES[normalizedLocalizedPath]
+    if (alias) {
+      const redirectUrl = new URL(req.url)
+      redirectUrl.pathname = alias.pathname === "/" ? localePrefix : `${localePrefix}${alias.pathname}`
+      redirectUrl.search = req.nextUrl.search
+      redirectUrl.hash = alias.hash ? `#${alias.hash}` : ""
+      return NextResponse.redirect(redirectUrl)
+    }
+
+    if (CANONICAL_PUBLIC_PATHS.has(normalizedLocalizedPath) && localizedPath !== normalizedLocalizedPath) {
+      const redirectUrl = new URL(req.url)
+      redirectUrl.pathname = `${localePrefix}${normalizedLocalizedPath}`
+      redirectUrl.search = req.nextUrl.search
+      return NextResponse.redirect(redirectUrl)
+    }
   }
 
 
@@ -262,8 +338,14 @@ export default async function middleware(req: NextRequest) {
         secure: process.env.NODE_ENV === "production",
       })
     }
-    if (city) response.headers.set("x-user-city", encodeURIComponent(city))
-    if (region) response.headers.set("x-user-region", encodeURIComponent(region))
+
+    if (city) {
+      response.headers.set("x-user-city", encodeURIComponent(city))
+    }
+
+    if (region) {
+      response.headers.set("x-user-region", encodeURIComponent(region))
+    }
   }
 
   return response

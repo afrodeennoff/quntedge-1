@@ -12,7 +12,7 @@ const HowItWorks: React.FC = () => {
     ];
 
     return (
-        <section id="how-it-works" className="py-fluid-xl px-fluid-sm bg-[#050505] relative overflow-hidden border-t border-white/5">
+        <section id="how-it-works" className="py-fluid-xl bg-[#050505] relative overflow-hidden border-t border-white/5">
             <div className="container-fluid">
                 <div className="text-center mb-24 relative z-10">
                     <motion.h2
@@ -34,7 +34,7 @@ const HowItWorks: React.FC = () => {
                     </motion.p>
                 </div>
 
-                <div className="grid md:grid-cols-5 gap-6 relative">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
 
                     {/* Animated Connecting Line (Desktop) */}
                     <div className="hidden lg:block absolute top-[28px] left-[10%] w-[80%] h-[2px] z-0">

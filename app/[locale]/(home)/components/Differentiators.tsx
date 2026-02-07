@@ -26,7 +26,7 @@ const Differentiators: React.FC = () => {
     };
 
     return (
-        <section className="py-fluid-xl px-fluid-sm bg-black relative">
+        <section className="py-fluid-xl bg-black relative">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
             <div className="container-fluid relative z-10">
                 <div className="text-center mb-20">

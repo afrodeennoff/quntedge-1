@@ -4,14 +4,14 @@ import { motion } from 'framer-motion';
 
 const Qualification: React.FC = () => {
     return (
-        <section className="py-fluid-xl px-fluid-sm border-t border-white/5 bg-[#050505]">
+        <section className="py-fluid-xl border-t border-white/5 bg-[#050505]">
             <div className="container-fluid">
                 <div className="grid md:grid-cols-2 gap-2 bg-white/5 border border-white/5 p-1 md:p-2 rounded-sm overflow-hidden">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="p-16 bg-[#080808]"
+                        className="p-8 sm:p-10 lg:p-16 bg-[#080808]"
                     >
                         <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-teal-500 mb-10 mono">Ideal Candidate</h3>
                         <ul className="space-y-6">
@@ -32,7 +32,7 @@ const Qualification: React.FC = () => {
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="p-16 bg-black"
+                        className="p-8 sm:p-10 lg:p-16 bg-black"
                     >
                         <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-zinc-500 mb-10 mono">Hard Refusals</h3>
                         <ul className="space-y-6 opacity-60">

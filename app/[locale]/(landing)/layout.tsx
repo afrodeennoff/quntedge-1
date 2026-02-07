@@ -1,5 +1,4 @@
-import Navbar from "./components/navbar";
-import Footer from "./components/footer";
+import MarketingLayoutShell from "./components/marketing-layout-shell";
 
 import { Metadata } from 'next';
 
@@ -32,15 +31,13 @@ export default async function RootLayout(
   } = props;
 
   // Await the params since it's now a Promise in Next.js 15
-  const { locale } = await params;
+  await params;
 
   return (
-    <div className="px-2 sm:px-6 lg:px-32">
-      <Navbar />
-      <div className="mt-8 sm:mt-20 max-w-7xl mx-auto">
+    <MarketingLayoutShell contentClassName="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div>
         {children}
       </div>
-      <Footer />
-    </div>
+    </MarketingLayoutShell>
   );
 }
