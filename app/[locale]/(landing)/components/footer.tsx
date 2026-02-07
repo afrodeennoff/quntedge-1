@@ -16,6 +16,7 @@ export default function Footer() {
       { name: t('footer.product.support'), href: '/support' },
     ],
     company: [
+      { name: 'Support Center', href: '/support' },
       { name: t('footer.company.about'), href: '/about' },
       { name: 'Community', href: '/community' },
       { name: 'Roadmap', href: '/updates' },

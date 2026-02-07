@@ -165,35 +165,68 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  const response = I18nMiddleware(req)
-  // Optimization: If i18n wants a redirect (e.g. locale prefixing), return early
-  if (response.status >= 300 && response.status < 400) {
-    return response
-  }
+  // Normalize and fix common public-route aliases before i18n runs.
+  // This ensures `/porpfirm` works even when no locale prefix is present.
+  const normalizedPathname = normalizePath(pathname)
+  const normalizedSegments = normalizedPathname.split("/").filter(Boolean)
+  const detectedLocale =
+    normalizedSegments[0] && SUPPORTED_LOCALES.includes(normalizedSegments[0])
+      ? normalizedSegments[0]
+      : null
 
-  const pathSegments = pathname.split("/").filter(Boolean)
-  const firstSegment = pathSegments[0]?.toLowerCase()
+  if (detectedLocale) {
+    const localizedPath =
+      normalizedSegments.length > 1
+        ? `/${normalizedSegments.slice(1).join("/")}`
+        : "/"
 
-  if (firstSegment && SUPPORTED_LOCALES.includes(firstSegment)) {
-    const localePrefix = `/${firstSegment}`
-    const localizedPath = pathSegments.length > 1 ? `/${pathSegments.slice(1).join("/")}` : "/"
-    const normalizedLocalizedPath = normalizePath(localizedPath)
-
-    const alias = ROUTE_ALIASES[normalizedLocalizedPath]
+    const alias = ROUTE_ALIASES[localizedPath]
     if (alias) {
       const redirectUrl = new URL(req.url)
-      redirectUrl.pathname = alias.pathname === "/" ? localePrefix : `${localePrefix}${alias.pathname}`
+      redirectUrl.pathname =
+        alias.pathname === "/"
+          ? `/${detectedLocale}`
+          : `/${detectedLocale}${alias.pathname}`
       redirectUrl.search = req.nextUrl.search
       redirectUrl.hash = alias.hash ? `#${alias.hash}` : ""
       return NextResponse.redirect(redirectUrl)
     }
 
-    if (CANONICAL_PUBLIC_PATHS.has(normalizedLocalizedPath) && localizedPath !== normalizedLocalizedPath) {
+    if (CANONICAL_PUBLIC_PATHS.has(localizedPath)) {
+      const canonicalPath =
+        localizedPath === "/"
+          ? `/${detectedLocale}`
+          : `/${detectedLocale}${localizedPath}`
+
+      if (normalizedPathname !== canonicalPath) {
+        const redirectUrl = new URL(req.url)
+        redirectUrl.pathname = canonicalPath
+        redirectUrl.search = req.nextUrl.search
+        return NextResponse.redirect(redirectUrl)
+      }
+    }
+  } else {
+    const alias = ROUTE_ALIASES[normalizedPathname]
+    if (alias) {
       const redirectUrl = new URL(req.url)
-      redirectUrl.pathname = `${localePrefix}${normalizedLocalizedPath}`
+      redirectUrl.pathname = alias.pathname
+      redirectUrl.search = req.nextUrl.search
+      redirectUrl.hash = alias.hash ? `#${alias.hash}` : ""
+      return NextResponse.redirect(redirectUrl)
+    }
+
+    if (CANONICAL_PUBLIC_PATHS.has(normalizedPathname) && pathname !== normalizedPathname) {
+      const redirectUrl = new URL(req.url)
+      redirectUrl.pathname = normalizedPathname
       redirectUrl.search = req.nextUrl.search
       return NextResponse.redirect(redirectUrl)
     }
+  }
+
+  const response = I18nMiddleware(req)
+  // Optimization: If i18n wants a redirect (e.g. locale prefixing), return early
+  if (response.status >= 300 && response.status < 400) {
+    return response
   }
 
 
