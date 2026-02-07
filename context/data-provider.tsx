@@ -550,14 +550,14 @@ export const DataProvider: React.FC<{
     const loadDataIfMounted = async () => {
       if (!mounted) return;
       await loadData();
-      // Load Stripe subscription data
+      // Load Whop subscription data
       try {
         setSubscriptionLoading(true);
         const subscriptionData = await getSubscriptionData();
         setSubscriptionData(subscriptionData);
         setSubscriptionError(null);
       } catch (error) {
-        console.error("Error loading Stripe subscription:", error);
+        console.error("Error loading Whop subscription:", error);
         setSubscriptionError(
           error instanceof Error ? error.message : "Failed to load subscription"
         );
@@ -593,7 +593,7 @@ export const DataProvider: React.FC<{
       setSubscriptionData(subscriptionData);
       setSubscriptionError(null);
     } catch (error) {
-      console.error("Error loading Stripe subscription:", error);
+      console.error("Error loading Whop subscription:", error);
       setSubscriptionError(
         error instanceof Error ? error.message : "Failed to load subscription"
       );
