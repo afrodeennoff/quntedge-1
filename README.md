@@ -90,9 +90,9 @@
 - **Authentication**: Supabase Auth (Discord OAuth, Email)
 - **Real-time**: WebSocket connections for live data
 
-### External Services
+-### External Services
 
-- **Payments**: Stripe integration with webhooks
+- **Payments**: Whop integration with webhooks (see https://docs.whop.com/get-started)
 - **AI/ML**: OpenAI API for analysis and field mapping
 - **Storage**: Supabase Storage for file uploads
 - **Broker Syncs**: Tradovate API, Rithmic proprietary service
@@ -436,4 +436,3 @@ Read the full license text in the [LICENSE](LICENSE) file.
     <a href="https://qunt edge.app">Website</a>
   </p>
 </div>
-
