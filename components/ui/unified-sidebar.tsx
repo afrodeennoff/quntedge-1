@@ -73,20 +73,20 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.03,
-      delayChildren: 0.06,
-      duration: 0.3,
+      staggerChildren: 0.02,
+      delayChildren: 0.04,
+      duration: 0.24,
       ease: [0.21, 0.47, 0.32, 0.98],
     },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, x: -8 },
+  hidden: { opacity: 0, x: -6 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.24, ease: [0.21, 0.47, 0.32, 0.98] },
+    transition: { duration: 0.2, ease: [0.21, 0.47, 0.32, 0.98] },
   },
 }
 
@@ -99,9 +99,9 @@ const fastSpring = {
 
 const subtleSpring = {
   type: "spring" as const,
-  stiffness: 280,
-  damping: 26,
-  mass: 0.7,
+  stiffness: 260,
+  damping: 30,
+  mass: 0.72,
 }
 
 function stripLocalePrefix(pathname: string) {
@@ -226,7 +226,7 @@ const SIDEBAR_STYLE_CLASSES: Record<
       "mx-0.5 flex items-center gap-3 rounded-xl border border-border/60 bg-background p-2.5 transition-colors duration-200 hover:border-border",
     avatar: "size-9 border border-border/60 ring-1 ring-border/30",
     avatarFallback: "bg-muted text-[11px] font-bold uppercase text-foreground",
-    content: "custom-scrollbar flex flex-col gap-4 px-2 py-3",
+    content: "flex flex-col gap-3 px-2 py-2 overflow-hidden",
     groupLabel: "text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground",
     groupLine: "h-px flex-1 bg-border/70",
     itemTrack: "bg-foreground/80",
@@ -259,7 +259,7 @@ const SIDEBAR_STYLE_CLASSES: Record<
       "mx-0.5 flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.03] p-2.5 transition-colors duration-200 hover:border-white/25",
     avatar: "size-9 border border-white/15 ring-1 ring-white/10",
     avatarFallback: "bg-primary/20 text-[11px] font-bold uppercase text-primary",
-    content: "custom-scrollbar flex flex-col gap-4 px-2 py-3",
+    content: "flex flex-col gap-3 px-2 py-2 overflow-hidden",
     groupLabel: "text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/75",
     groupLine: "h-px flex-1 bg-white/15",
     itemTrack: "bg-primary",
@@ -298,8 +298,8 @@ const SidebarItem = React.memo(({
   const isDisabled = Boolean(item.disabled)
   const isLink = Boolean(item.href) && !isDisabled
   const styles = SIDEBAR_STYLE_CLASSES[styleVariant]
-  const hoverAnimation = !reduceMotion && !isDisabled ? { x: 2 } : undefined
-  const tapAnimation = !reduceMotion && !isDisabled ? { scale: 0.992 } : undefined
+  const hoverAnimation = !reduceMotion && !isDisabled ? { x: 1 } : undefined
+  const tapAnimation = !reduceMotion && !isDisabled ? { scale: 0.995 } : undefined
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isDisabled) {
@@ -329,7 +329,7 @@ const SidebarItem = React.memo(({
         animate={
           reduceMotion
             ? undefined
-            : { scale: active ? 1.04 : 1, rotate: active ? 0.5 : 0 }
+            : { scale: active ? 1.03 : 1 }
         }
         transition={reduceMotion ? undefined : subtleSpring}
       >
@@ -343,7 +343,7 @@ const SidebarItem = React.memo(({
           isDisabled && "text-muted-foreground/70"
         )}
         animate={reduceMotion ? undefined : { x: active ? 0.75 : 0 }}
-        transition={reduceMotion ? undefined : { duration: 0.18, ease: "easeOut" }}
+        transition={reduceMotion ? undefined : { duration: 0.16, ease: "easeOut" }}
       >
         {label}
       </motion.span>
@@ -435,19 +435,49 @@ export function UnifiedSidebar({
       <SidebarRail className={styles.rail} />
 
       <SidebarHeader className={styles.header}>
+        <motion.button
+          type="button"
+          onClick={toggleSidebar}
+          className={cn(styles.collapse, "mb-2 h-8")}
+          whileHover={shouldReduceMotion ? undefined : { x: 1 }}
+          whileTap={shouldReduceMotion ? undefined : { scale: 0.995 }}
+          transition={shouldReduceMotion ? undefined : subtleSpring}
+        >
+          {state === "expanded" ? (
+            <>
+              <ChevronsLeft className="size-4 shrink-0" />
+              <span className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] group-data-[collapsible=icon]:hidden">
+                Collapse
+              </span>
+            </>
+          ) : (
+            <ChevronsRight className="size-4 shrink-0" />
+          )}
+        </motion.button>
+
         <motion.div
-          className={styles.brandCard}
+          className={cn(
+            styles.brandCard,
+            "group-data-[collapsible=icon]:mb-2 group-data-[collapsible=icon]:h-11 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:border-transparent group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:shadow-none"
+          )}
           initial={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
           animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
           transition={shouldReduceMotion ? undefined : subtleSpring}
         >
-          <div className={styles.brandIcon}>
+          <motion.div
+            className={cn(
+              styles.brandIcon,
+              "ring-1 ring-inset ring-white/10 shadow-[0_4px_14px_rgba(0,0,0,0.16)]"
+            )}
+            whileHover={shouldReduceMotion ? undefined : { scale: 1.04 }}
+            transition={shouldReduceMotion ? undefined : subtleSpring}
+          >
             <Logo className="size-4.5" />
-          </div>
+          </motion.div>
           <div className="flex min-w-0 flex-col group-data-[collapsible=icon]:hidden">
             <LogoText />
-            <span className={styles.workspaceLabel}>
-              Workspace
+            <span className={cn(styles.workspaceLabel, "tracking-[0.16em]")}>
+              Trading Workspace
             </span>
           </div>
         </motion.div>
@@ -647,26 +677,6 @@ export function UnifiedSidebar({
               </span>
             </motion.button>
           )}
-
-          <motion.button
-            type="button"
-            onClick={toggleSidebar}
-            className={styles.collapse}
-            whileHover={shouldReduceMotion ? undefined : { x: 1 }}
-            whileTap={shouldReduceMotion ? undefined : { scale: 0.992 }}
-            transition={shouldReduceMotion ? undefined : subtleSpring}
-          >
-            {state === "expanded" ? (
-              <>
-                <ChevronsLeft className="size-4 shrink-0" />
-                <span className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] group-data-[collapsible=icon]:hidden">
-                  Collapse
-                </span>
-              </>
-            ) : (
-              <ChevronsRight className="size-4 shrink-0" />
-            )}
-          </motion.button>
         </div>
       </SidebarFooter>
     </Sidebar>
