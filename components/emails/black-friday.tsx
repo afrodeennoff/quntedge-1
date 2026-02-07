@@ -51,7 +51,7 @@ const copy = {
     support:
       "Comme toujours, si vous avez des questions sur la plateforme ou besoin d'aide pour analyser vos trades, n'hésitez pas à répondre à ce message.",
     closingLine1: 'À bientôt,',
-    closingLine2: "Hugo",
+    closingLine2: "TIMON",
     unsubscribe: 'Se désabonner',
   },
 };

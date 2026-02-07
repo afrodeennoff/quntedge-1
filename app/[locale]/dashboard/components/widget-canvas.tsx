@@ -149,12 +149,6 @@ function WidgetWrapper({ children, onRemove, onChangeSize, isCustomizing, size, 
   }, [isCustomizing, isMobile])
 
   const showControls = isCustomizing && (isMobile || isMouseNearby)
-  const isReferenceWidget =
-    currentType === 'expectancy' ||
-    currentType === 'riskMetrics' ||
-    currentType === 'tradingScore'
-  const isUnifiedStyledWidget = !isReferenceWidget
-
   return (
     <motion.div
       ref={widgetRef}
@@ -162,21 +156,12 @@ function WidgetWrapper({ children, onRemove, onChangeSize, isCustomizing, size, 
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={cn(
-        "relative h-full w-full rounded-2xl group isolate overflow-clip transition-all duration-300",
-        isUnifiedStyledWidget
-          ? "bg-[linear-gradient(140deg,rgba(14,20,28,0.92),rgba(7,12,19,0.9))] backdrop-blur-xl border border-cyan-400/15 shadow-[0_26px_70px_-38px_rgba(6,182,212,0.42)] hover:border-cyan-300/35 hover:shadow-[0_32px_95px_-45px_rgba(56,189,248,0.5)]"
-          : "bg-card/40 backdrop-blur-md border border-white/5 shadow-2xl premium-glow-hover"
+        "relative h-full w-full rounded-2xl group isolate overflow-clip transition-all duration-300 [&>*]:h-full [&>*]:rounded-[inherit] [&>*]:border-0 [&>*]:bg-transparent",
+        "bg-card/40 backdrop-blur-md shadow-2xl premium-glow-hover",
+        isCustomizing ? "border border-accent/40" : "border border-transparent"
       )}
       onTouchStart={handleTouchStart}
     >
-      {isUnifiedStyledWidget && (
-        <>
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/55 to-transparent pointer-events-none" />
-          <div className="absolute -top-20 -right-16 h-40 w-40 rounded-full bg-cyan-500/12 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-20 -left-16 h-40 w-40 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
-        </>
-      )}
-
       <div className={cn("h-full w-full transition-all duration-500",
         isCustomizing && showControls && "group-hover:blur-[4px] scale-[0.98]",
         isCustomizing && isMobile && "blur-[4px] scale-[0.98]"

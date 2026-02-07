@@ -20,7 +20,7 @@ const initialContent: NewsletterContent = {
   youtubeId: "",
   introMessage: "",
   features: [""],
-  firstName: "Hugo"
+  firstName: "TIMON"
 }
 
 const NewsletterContext = createContext<NewsletterContextType | undefined>(undefined)
