@@ -346,7 +346,7 @@ export default function WidgetCanvas() {
             isResizable={false}
             draggableHandle=".drag-handle"
             onLayoutChange={handleLayoutChange}
-            margin={[16, 16]}
+            margin={[6, 6]}
             containerPadding={[0, 0]}
             useCSSTransforms={true}
           >
