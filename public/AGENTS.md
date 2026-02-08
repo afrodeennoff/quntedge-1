@@ -135,24 +135,34 @@ Escalate to a human reviewer when:
 - Security/auth edge cases are uncertain.
 - Payment lifecycle events conflict or duplicate unexpectedly.
 
-## Recent Changes (Last 20 Commits)
-1. `0ef1430` (2026-02-08): fix: resolve Tradovate sync and trade import data visibility issues.
-2. `0698a70` (2026-02-08): Added bulk Tradovate sync translations in `locales/en.ts` and `locales/fr.ts`.
-3. `f0b751c` (2026-02-08): Updated Tradovate sync API route and sync context (`app/api/tradovate/sync/route.ts`, `context/tradovate-sync-context.tsx`).
-4. `420e951` (2026-02-08): Handled Prisma `P3005` by baselining migrations in CI build path (`scripts/sync-stack.mjs`).
-5. `6a10979` (2026-02-08): Fixed client crash and integrated DB sync into build flow (`app/layout.tsx`, `package.json`, `scripts/sync-stack.mjs`).
-6. `803a85f` (2026-02-08): Updated dashboard "chart-the-future" panel.
-7. `d682678` (2026-02-08): Updated dashboard and API components, including import and thor store route paths.
-8. `1694ca1` (2026-02-08): Broad dashboard-area updates across behavior, billing, data, reports, settings, strategies, and teams dashboard routes.
-9. `4e02294` (2026-02-08): Removed unused files/components and cleanup across home/dashboard/API/server/config artifacts.
-10. `bc03704` (2026-02-08): Updated home page component set and sidebar-related UI files.
-11. `9630591` (2026-02-08): Reverted home page sidebar changes in `HomeContent`.
-12. `83e7aef` (2026-02-08): Updated home hero metrics and messaging.
-13. `4e216b3` (2026-02-08): Added dashboard chart and revised widget/sidebar integration, including widget registry/types.
-14. `0aa0889` (2026-02-08): Unified widget shell styling and dashboard UI updates.
-15. `2568eb5` (2026-02-08): Reduced dashboard widget grid gap in widget canvas.
-16. `e98800d` (2026-02-08): Optimized widget loading via lazy split and fixed mobile summary behavior.
-17. `9fd4304` (2026-02-08): Documentation updates plus related dashboard summary adjustments.
-18. `3cf798c` (2026-02-08): Refreshed data provider context.
-19. `09dba7b` (2026-02-08): Updated French terms localization.
-20. `2476e6b` (2026-02-08): Updated English terms localization.
+## Recent Changes (Last 30 Commits)
+1. `43b8e9c` (2026-02-08): docs: update AGENTS.md with latest changes and cache guidelines
+2. `0ef1430` (2026-02-08): fix: resolve Tradovate sync and trade import data visibility issues
+3. `0698a70` (2026-02-08): Add bulk sync translations for Tradovate
+4. `f0b751c` (2026-02-08): Update Tradovate sync route and context
+5. `420e951` (2026-02-08): Handle Prisma P3005 by baselining migrations in CI build
+6. `6a10979` (2026-02-08): Fix client crash and add Prisma DB sync in build
+7. `803a85f` (2026-02-08): chore: update chart-the-future-panel
+8. `d682678` (2026-02-08): chore: update dashboard and api components
+9. `1694ca1` (2026-02-08): chore: force update codebase
+10. `4e02294` (2026-02-08): chore: Clean up unused files and components
+11. `bc03704` (2026-02-08): chore: update codebase
+12. `9630591` (2026-02-08): Revert home page sidebar changes
+13. `83e7aef` (2026-02-08): Update Hero metrics and messaging
+14. `4e216b3` (2026-02-08): Add dashboard chart and update widget/sidebar integration
+15. `0aa0889` (2026-02-08): Unify widget shell styling and dashboard UI updates
+16. `2568eb5` (2026-02-08): Reduce dashboard widget grid gap to 6x6
+17. `e98800d` (2026-02-08): Optimize dashboard widget loading with lazy split and mobile summary fix
+18. `9fd4304` (2026-02-08): doc updates
+19. `3cf798c` (2026-02-08): Refresh data provider context
+20. `09dba7b` (2026-02-08): Update French terms localization
+21. `2476e6b` (2026-02-08): Update terms localization
+22. `a8219ae` (2026-02-08): Update README
+23. `634175c` (2026-02-08): Update dashboard and landing UI
+24. `28c0c95` (2026-02-08): chore: reduce lint warnings in community and payment service
+25. `69d9b50` (2026-02-08): Refine home UX with minimal layout and motion polish
+26. `5fe2bea` (2026-02-08): Refine and blend sidebar design with legacy active styling
+27. `b99036e` (2026-02-08): Update home and landing UI components
+28. `5479ff0` (2026-02-08): chore: update codebase
+29. `377b2d4` (2026-02-07): Unify marketing + dashboard UI and harden routing/typecheck
+30. `18cc67d` (2026-02-07): Update landing update page, app layout, and package config
