@@ -650,12 +650,12 @@ const SidebarMenuSkeleton = React.forwardRef<
     showIcon?: boolean
   }
 >(({ className, showIcon = false, ...props }, ref) => {
-  // Fixed width for skeleton (using ref to avoid impure function during render)
-  const widthRef = React.useRef<string | null>(null)
-  if (!widthRef.current) {
-    widthRef.current = `${Math.floor(Math.random() * 40) + 50}%`
-  }
-  const width = widthRef.current
+  // Create stable per-instance width without render-time randomness.
+  const id = React.useId()
+  const width = React.useMemo(() => {
+    const hash = Array.from(id).reduce((acc, ch) => acc + ch.charCodeAt(0), 0)
+    return `${50 + (hash % 40)}%`
+  }, [id])
 
   return (
     <div

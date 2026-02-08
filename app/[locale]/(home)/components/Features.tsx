@@ -1,41 +1,41 @@
 import { motion } from 'framer-motion'
-import { BarChart3, Brain, CalendarCheck2, Database, LayoutDashboard, Users } from 'lucide-react'
+import { BarChart3, BellRing, Brain, CalendarCheck2, Database, LayoutDashboard, Users } from 'lucide-react'
 
 const features = [
   {
-    title: 'Unified Imports',
-    subtitle: 'Data Ingestion',
-    desc: 'Sync major brokers or upload CSV files with flexible field mapping and validation.',
+    title: 'One-Click Trade Sync',
+    subtitle: 'Connected Data',
+    desc: 'Pull fills from leading brokers and prop firm platforms without manual spreadsheet cleanup.',
     icon: Database,
   },
   {
-    title: 'Execution Analytics',
-    subtitle: 'Visualization',
-    desc: 'Track expectancy, discipline score, and equity context in one operational workspace.',
+    title: 'Execution Intelligence',
+    subtitle: 'AI Analysis',
+    desc: 'Track discipline, setup quality, and expectancy inside one desk-grade review workspace.',
     icon: BarChart3,
   },
   {
-    title: 'Daily Review System',
-    subtitle: 'Calendar Intelligence',
-    desc: 'Move from session outcome to decision-level diagnosis in minutes.',
+    title: 'Daily Debrief Workflow',
+    subtitle: 'Review System',
+    desc: 'Convert every session into structured feedback loops you can act on next market open.',
     icon: CalendarCheck2,
   },
   {
-    title: 'AI Journaling',
-    subtitle: 'Context Engine',
-    desc: 'Capture mindset patterns and connect them directly to measurable execution quality.',
+    title: 'Context-Aware Journaling',
+    subtitle: 'Behavior Layer',
+    desc: 'Tag emotions, bias, and confidence, then map them directly to execution outcomes.',
     icon: Brain,
   },
   {
-    title: 'Custom Dashboards',
-    subtitle: 'Workspace Control',
-    desc: 'Compose widgets around your process and keep layout consistency across sessions.',
+    title: 'Custom Command Center',
+    subtitle: 'Desk Control',
+    desc: 'Build role-specific dashboards with widgets for risk, setups, behavior, and performance.',
     icon: LayoutDashboard,
   },
   {
-    title: 'Team Oversight',
-    subtitle: 'Multi-User',
-    desc: 'Monitor traders, enforce structure, and compare consistency across accounts.',
+    title: 'Coach + Team View',
+    subtitle: 'Collaboration',
+    desc: 'Track consistency across traders, enforce review standards, and flag coaching moments.',
     icon: Users,
   },
 ]
@@ -50,15 +50,20 @@ export default function Features() {
       <div className="container-fluid">
         <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary">Platform Features</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary">Platform Capabilities</p>
             <h2 className="mt-3 text-fluid-2xl font-black tracking-tight sm:text-fluid-4xl">
-              Precision Tools,
-              <span className="text-muted-foreground"> Zero Noise</span>
+              Professional Infrastructure
+              <span className="text-muted-foreground"> For Discretionary Traders</span>
             </h2>
           </div>
           <p className="max-w-md text-sm text-muted-foreground">
-            Designed for discretionary traders who need speed, structure, and dependable review quality.
+            Inspired by institutional workflow design: fewer clicks, higher signal density, better decisions.
           </p>
+        </div>
+
+        <div className="mb-6 inline-flex items-center gap-2 rounded-xl border border-sky-500/25 bg-sky-500/10 px-3 py-2 text-[11px] font-black uppercase tracking-[0.15em] text-sky-300">
+          <BellRing className="h-3.5 w-3.5" />
+          New: AI Trade Replay + Bias Alerts
         </div>
 
         <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
@@ -72,9 +77,9 @@ export default function Features() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05, duration: 0.35 }}
                 whileHover={{ y: -3 }}
-                className="group rounded-2xl border border-border/70 bg-card/75 p-5 transition-all duration-150 ease-in-out hover:border-primary/25 hover:bg-card/90 active:scale-[0.99]"
+                className="group rounded-2xl border border-border/70 bg-gradient-to-b from-card/90 to-card/70 p-5 transition-all duration-150 ease-in-out hover:border-primary/30 hover:bg-card/95 active:scale-[0.99]"
               >
-                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg border border-primary/25 bg-gradient-to-br from-primary/20 to-sky-500/15 text-primary">
                   <Icon className="h-4.5 w-4.5" />
                 </div>
                 <p className="text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground transition-colors group-hover:text-primary">

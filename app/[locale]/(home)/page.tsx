@@ -9,8 +9,8 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-    title: 'Qunt Edge | Professional Trading Analytics',
-    description: 'The clinical intelligence layer for professional discretionary traders. Stop auditing the money, audit the execution.',
+    title: 'Qunt Edge | AI Trading Performance Platform',
+    description: 'A modern execution intelligence platform for discretionary traders: unify data, diagnose behavior drift, and improve consistency with AI-led review.',
 };
 
 export default async function HomePage({

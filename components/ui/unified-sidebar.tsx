@@ -223,38 +223,38 @@ const SIDEBAR_STYLE_CLASSES: Record<
   },
   glassy: {
     sidebar:
-      "border-r border-white/10 bg-gradient-to-b from-background/95 via-background/80 to-background/70 backdrop-blur-xl",
-    rail: "after:bg-white/25 after:transition-colors after:duration-200 hover:bg-primary/10 hover:after:bg-primary/45",
-    header: "border-b border-white/10 px-2.5 py-2.5",
+      "border-r border-white/5 bg-[#030303] text-zinc-300",
+    rail: "after:bg-white/5 after:transition-colors after:duration-200 hover:bg-teal-500/10 hover:after:bg-teal-500/40",
+    header: "border-b border-white/5 px-4 py-4",
     brandCard:
-      "flex h-12 items-center gap-2.5 overflow-hidden rounded-xl border border-white/15 bg-white/[0.04] px-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)]",
+      "flex h-10 items-center gap-3 overflow-hidden rounded-xl bg-transparent px-0 transition-all duration-300",
     brandIcon:
-      "flex size-8.5 shrink-0 items-center justify-center rounded-xl border border-primary/30 bg-gradient-to-br from-primary/25 to-primary/10 text-primary",
-    workspaceLabel: "truncate text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground/85",
+      "flex size-10 shrink-0 items-center justify-center rounded-xl border border-teal-500/10 bg-teal-500/5 text-teal-400 relative overflow-hidden group",
+    workspaceLabel: "truncate text-[9px] font-mono uppercase tracking-widest text-teal-500 mt-1",
     userCard:
-      "mx-0.5 flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.03] p-2.5 transition-colors duration-200 hover:border-white/25",
-    avatar: "size-9 border border-white/15 ring-1 ring-white/10",
-    avatarFallback: "bg-primary/20 text-[11px] font-bold uppercase text-primary",
-    content: "flex flex-col px-2 py-2 overflow-hidden",
-    groupLabel: "text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/75",
-    groupLine: "h-px flex-1 bg-white/15",
-    itemTrack: "bg-primary",
+      "mx-0 flex items-center gap-3 rounded-lg border border-transparent bg-transparent p-2 transition-colors duration-200 hover:bg-white/5",
+    avatar: "size-9 border border-white/10 ring-1 ring-transparent group-hover:ring-teal-500/30 rounded-lg",
+    avatarFallback: "bg-zinc-800 text-[10px] font-bold text-zinc-300",
+    content: "flex flex-col px-3 py-4 overflow-x-hidden",
+    groupLabel: "text-[9px] font-bold uppercase tracking-widest text-zinc-600 px-3 mb-2 animate-in fade-in slide-in-from-left-2",
+    groupLine: "h-px flex-1 bg-white/5",
+    itemTrack: "bg-teal-500 shadow-[0_0_10px_#2dd4bf]",
     itemIconActive:
-      "border-primary/30 bg-primary/15 text-primary shadow-[0_0_0_1px_rgba(var(--primary),0.15)]",
+      "text-teal-400",
     itemIconInactive:
-      "border-white/15 bg-white/[0.03] text-muted-foreground group-hover/item:border-white/25 group-hover/item:text-foreground",
+      "text-zinc-500 group-hover/item:text-zinc-300",
     itemButtonActive:
-      "border-primary/25 bg-primary/12 text-foreground shadow-[0_0_0_1px_rgba(var(--primary),0.10),0_6px_20px_rgba(0,0,0,0.12)]",
-    itemButtonInactive: "hover:border-white/20 hover:bg-white/[0.04]",
+      "bg-gradient-to-r from-teal-500/10 to-transparent text-white",
+    itemButtonInactive: "hover:bg-white/5 hover:text-zinc-200 text-zinc-500",
     selectTrigger:
-      "h-9 rounded-xl border-white/20 bg-white/[0.03] text-[12px] font-medium hover:border-white/30 focus:ring-sidebar-ring",
-    footer: "border-t border-white/10 bg-background/75 p-2.5 backdrop-blur-sm",
+      "h-9 rounded-lg border-white/10 bg-zinc-900/50 text-[12px] font-medium hover:border-white/20 hover:text-white focus:ring-teal-500/50 transition-colors",
+    footer: "border-t border-white/5 bg-[#020202] p-4",
     logout:
-      "flex h-9 w-full items-center gap-3 rounded-xl px-3 text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0",
+      "flex h-8 w-8 items-center justify-center rounded-lg text-zinc-600 transition-all duration-200 hover:bg-red-500/10 hover:text-red-400 ml-auto",
     collapse:
-      "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/[0.06] text-muted-foreground shadow-[0_10px_20px_rgba(0,0,0,0.2)] transition-all duration-200 hover:border-white/30 hover:bg-white/[0.12] hover:text-foreground",
+      "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 bg-[#030303] text-zinc-500 shadow-lg transition-all duration-200 hover:border-teal-500/50 hover:text-teal-400 absolute -right-3 top-8 z-50",
     edgeCollapse:
-      "absolute -right-3 top-16 z-30 hidden border border-white/20 bg-background/90 shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm md:flex",
+      "absolute -right-3 top-8 z-50 hidden border border-white/10 bg-[#030303] shadow-lg md:flex",
   },
 }
 
@@ -292,14 +292,14 @@ const SidebarItem = React.memo(({
       {active && (
         <motion.div
           layoutId="activeHighlight"
-          className={cn("absolute left-0 w-1 h-5 rounded-full", styles.itemTrack)}
+          className={cn("absolute left-0 w-0.5 h-6 rounded-r-full", styles.itemTrack)}
           transition={reduceMotion ? { duration: 0 } : fastSpring}
         />
       )}
 
       <motion.div
         className={cn(
-          "relative flex size-7 shrink-0 items-center justify-center rounded-lg border transition-all duration-200 transform-gpu",
+          "relative flex size-5 shrink-0 items-center justify-center transition-all duration-200",
           active ? styles.itemIconActive : styles.itemIconInactive,
           isDisabled && "opacity-70"
         )}
@@ -310,15 +310,10 @@ const SidebarItem = React.memo(({
         }
         transition={reduceMotion ? undefined : subtleSpring}
       >
-        <div className="size-4">{item.icon}</div>
+        <div className="size-5 flex items-center justify-center">{item.icon}</div>
         {active && (
-          <motion.div
-            layoutId="activeGlow"
-            className="absolute inset-0 rounded-full bg-primary/25 blur-md -z-10"
-            initial={reduceMotion ? undefined : { opacity: 0, scale: 0.6 }}
-            animate={reduceMotion ? undefined : { opacity: 1, scale: 1.3 }}
-            transition={reduceMotion ? undefined : { duration: 0.24, ease: "easeOut" }}
-          />
+          /* Removed the glow background as we use gradient on the button now */
+          null
         )}
       </motion.div>
 
@@ -366,9 +361,9 @@ const SidebarItem = React.memo(({
           aria-disabled={isDisabled || undefined}
           disabled={isDisabled && !isLink}
           className={cn(
-            "relative mx-0.5 h-10 rounded-xl border border-transparent px-2.5 transition-all duration-200 group/item overflow-visible will-change-transform",
+            "relative w-full flex items-center gap-3 px-3 py-3 rounded-lg flex-shrink-0 transition-all duration-200 group/item overflow-visible will-change-transform",
             active
-              ? cn(styles.itemButtonActive, "shadow-sm")
+              ? cn(styles.itemButtonActive)
               : styles.itemButtonInactive,
             isDisabled && "opacity-60"
           )}
@@ -431,12 +426,13 @@ export function UnifiedSidebar({
               whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
               transition={shouldReduceMotion ? undefined : subtleSpring}
             >
-              <Logo className="size-4.5" />
+              <Logo className="size-5" />
+              <div className="absolute inset-0 bg-teal-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </motion.div>
             <div className="flex min-w-0 flex-col leading-none group-data-[collapsible=icon]:hidden">
-              <LogoText />
-              <span className={cn(styles.workspaceLabel, "mt-1 tracking-[0.12em]")}>
-                Workspace
+              <span className="font-bold text-white tracking-tight whitespace-nowrap leading-none text-lg">Qunt Edge</span>
+              <span className={styles.workspaceLabel}>
+                Terminal v2.4
               </span>
             </div>
           </motion.div>
@@ -470,8 +466,8 @@ export function UnifiedSidebar({
                   <SubscriptionBadge className="origin-right scale-90 shadow-none" />
                 )}
               </div>
-              <span className="block truncate text-[11px] text-muted-foreground">
-                {user.email}
+              <span className="block truncate text-[10px] text-zinc-500 font-mono">
+                ID: #8821-X
               </span>
             </div>
           </motion.div>
@@ -500,28 +496,55 @@ export function UnifiedSidebar({
             key="main-nav"
             layout={!shouldReduceMotion}
             transition={shouldReduceMotion ? { duration: 0 } : subtleSpring}
+            className="flex flex-col gap-6"
           >
-            <SidebarGroup className="p-0">
-              <SidebarGroupContent>
-                <SidebarMenu className="gap-1">
-                  {items.map((item, index) => (
-                    <motion.div
-                      key={`${item.href || item.label}-${index}`}
-                      layout={!shouldReduceMotion}
-                      transition={shouldReduceMotion ? { duration: 0 } : subtleSpring}
-                    >
-                      <SidebarItem
-                        item={item}
-                        state={state as SidebarState}
-                        styleVariant={styleVariant}
-                        reduceMotion={Boolean(shouldReduceMotion)}
-                        active={!item.disabled && !!item.href && checkActive(item.href)}
-                      />
-                    </motion.div>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
+            {(() => {
+              // Group items by their 'group' property
+              const groupedItems = items.reduce((acc, item) => {
+                const group = item.group || "Main";
+                if (!acc[group]) acc[group] = [];
+                acc[group].push(item);
+                return acc;
+              }, {} as Record<string, UnifiedSidebarItem[]>);
+
+              // Define group order if needed, otherwise use insertion order
+              // For now, we'll iterate through the keys in the order they were inserted (roughly)
+              // But to respect the input array order, we can collect unique groups in order
+              const groupOrder = items.reduce((acc, item) => {
+                const group = item.group || "Main";
+                if (!acc.includes(group)) acc.push(group);
+                return acc;
+              }, [] as string[]);
+
+              return groupOrder.map((groupName) => (
+                <SidebarGroup key={groupName} className="p-0">
+                  {groupName !== "Main" && state === "expanded" && (
+                    <div className={styles.groupLabel}>
+                      {groupName}
+                    </div>
+                  )}
+                  <SidebarGroupContent>
+                    <SidebarMenu className="gap-1">
+                      {groupedItems[groupName].map((item, index) => (
+                        <motion.div
+                          key={`${item.href || item.label}-${index}`}
+                          layout={!shouldReduceMotion}
+                          transition={shouldReduceMotion ? { duration: 0 } : subtleSpring}
+                        >
+                          <SidebarItem
+                            item={item}
+                            state={state as SidebarState}
+                            styleVariant={styleVariant}
+                            reduceMotion={Boolean(shouldReduceMotion)}
+                            active={!item.disabled && !!item.href && checkActive(item.href)}
+                          />
+                        </motion.div>
+                      ))}
+                    </SidebarMenu>
+                  </SidebarGroupContent>
+                </SidebarGroup>
+              ));
+            })()}
           </motion.div>
 
           <div className="mt-auto flex flex-col gap-2">
@@ -576,9 +599,7 @@ export function UnifiedSidebar({
               transition={shouldReduceMotion ? undefined : subtleSpring}
             >
               <LogOut className="size-4 shrink-0" />
-              <span className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] group-data-[collapsible=icon]:hidden">
-                Logout
-              </span>
+              <span className="hidden">Logout</span>
             </motion.button>
           )}
         </div>
