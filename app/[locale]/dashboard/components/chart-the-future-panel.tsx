@@ -24,6 +24,7 @@ const SYMBOLS = [
   { value: "COMEX:GC1!", label: "GC1!" },
   { value: "BINANCE:BTCUSDT", label: "BTCUSDT" },
 ] as const;
+type SymbolValue = (typeof SYMBOLS)[number]["value"];
 
 const TIMEFRAMES = [
   { value: "1", label: "1m" },
@@ -33,6 +34,7 @@ const TIMEFRAMES = [
   { value: "240", label: "4h" },
   { value: "1D", label: "1D" },
 ] as const;
+type TimeframeValue = (typeof TIMEFRAMES)[number]["value"];
 
 const SIGNALS: SignalCard[] = [
   {
@@ -150,8 +152,8 @@ function TradingViewCanvas({ symbol, interval }: { symbol: string; interval: str
 }
 
 export function ChartTheFuturePanel() {
-  const [symbol, setSymbol] = useState(SYMBOLS[0].value);
-  const [interval, setInterval] = useState(TIMEFRAMES[2].value);
+  const [symbol, setSymbol] = useState<SymbolValue>(SYMBOLS[0].value);
+  const [interval, setInterval] = useState<TimeframeValue>(TIMEFRAMES[2].value);
   const [activeTab, setActiveTab] = useState<TerminalTab>("signals");
   const [selectedSignal, setSelectedSignal] = useState(SIGNALS[0]);
 
@@ -182,7 +184,7 @@ export function ChartTheFuturePanel() {
             <header className="flex flex-wrap items-center gap-2 border-b border-white/10 p-3">
               <select
                 value={symbol}
-                onChange={(event) => setSymbol(event.target.value)}
+                onChange={(event) => setSymbol(event.target.value as SymbolValue)}
                 className="h-8 rounded-md border border-white/15 bg-black/35 px-2 text-xs text-slate-100 outline-none"
               >
                 {SYMBOLS.map((item) => (
