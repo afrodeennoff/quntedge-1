@@ -8,6 +8,12 @@ export async function GET() {
   try {
     const result = await getTradovateSynchronizations();
     if (result.error) {
+      if (result.error === "User not authenticated") {
+        return NextResponse.json(
+          { success: false, message: result.error, data: [] },
+          { status: 401 }
+        );
+      }
       return NextResponse.json(
         { success: false, message: result.error },
         { status: 400 }

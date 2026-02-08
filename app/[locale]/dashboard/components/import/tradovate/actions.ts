@@ -1301,7 +1301,6 @@ export async function getTradovateSynchronizations() {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {
-      console.error("TRADOVATE SYNC: Failed to authenticate user")
       return { error: 'User not authenticated' }
     }
 
@@ -1652,4 +1651,3 @@ export async function updateDailySyncTimeAction(
     return { success: false, error: 'Failed to update daily sync time' }
   }
 }
-

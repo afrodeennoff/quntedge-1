@@ -58,6 +58,11 @@ export function TradovateSyncContextProvider({ children }: { children: ReactNode
         headers: { "Content-Type": "application/json" },
       })
 
+      if (response.status === 401) {
+        setAccounts([])
+        return
+      }
+
       if (!response.ok) {
         throw new Error("Failed to fetch Tradovate synchronizations")
       }
