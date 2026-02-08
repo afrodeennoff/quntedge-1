@@ -324,19 +324,20 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
   const [hasInitializedExpanded, setHasInitializedExpanded] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
+
   // Sync local state with store
   React.useEffect(() => {
     if (tableConfig) {
-      setSorting(tableConfig.sorting);
-      setColumnFilters(tableConfig.columnFilters);
+      setSorting(tableConfig.sorting || []);
+      setColumnFilters(tableConfig.columnFilters || []);
       // When column config is disabled, force all columns to be visible (empty visibility state)
       if (config?.disableColumnConfig) {
         setColumnVisibility({});
       } else {
-        setColumnVisibility(tableConfig.columnVisibility);
+        setColumnVisibility(tableConfig.columnVisibility || {});
       }
-      setPageSize(tableConfig.pageSize);
-      setGroupingGranularity(tableConfig.groupingGranularity);
+      setPageSize(tableConfig.pageSize || 50);
+      setGroupingGranularity(tableConfig.groupingGranularity || 0);
     }
   }, [tableConfig, config?.disableColumnConfig]);
 
