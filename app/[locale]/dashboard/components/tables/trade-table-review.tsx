@@ -480,7 +480,7 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
         const roundedDate = new Date(date);
         roundedDate.setSeconds(
           Math.floor(date.getSeconds() / groupingGranularity) *
-            groupingGranularity,
+          groupingGranularity,
         );
         roundedDate.setMilliseconds(0);
         return roundedDate;
@@ -645,7 +645,7 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
           const tradeIds = [...groupId, ...subTradeIds];
           // Check if all trade IDs for this row are selected
           const isRowSelected = tradeIds.every((id) => selectedTrades.includes(id));
-          
+
           return (
             <Checkbox
               checked={isRowSelected}
@@ -1208,15 +1208,15 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
   // Get style values from config
   const cardStyle = config?.style
     ? {
-        height:
-          typeof config.style.height === "number"
-            ? `${config.style.height}px`
-            : config.style.height,
-        width:
-          typeof config.style.width === "number"
-            ? `${config.style.width}px`
-            : config.style.width,
-      }
+      height:
+        typeof config.style.height === "number"
+          ? `${config.style.height}px`
+          : config.style.height,
+      width:
+        typeof config.style.width === "number"
+          ? `${config.style.width}px`
+          : config.style.width,
+    }
     : {};
 
   // Determine if Card header should be shown (default to true if not specified)
@@ -1233,153 +1233,153 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
     >
       {showHeader && (
         <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b shrink-0 p-3 sm:p-4 h-[56px]">
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-1.5">
-            <CardTitle className="line-clamp-1 text-base">
-              {t("trade-table.title")}
-            </CardTitle>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent side="top">
-                  <p>{t("trade-table.description")}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-1.5">
+              <CardTitle className="line-clamp-1 text-base">
+                {t("trade-table.title")}
+              </CardTitle>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <p>{t("trade-table.description")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <div className="flex items-center gap-2">
+              {selectedTrades.length > 0 && (
+                <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      className="h-10 font-normal whitespace-nowrap"
+                      onClick={() => setShowDeleteDialog(true)}
+                    >
+                      <Trash className="mr-2 h-4 w-4" />
+                      {t("trade-table.deleteSelected")}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>{t("trade-table.deleteConfirmTitle")}</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        {t("trade-table.deleteConfirmDescription", {
+                          count: selectedTrades.length,
+                        })}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>
+                        {t("trade-table.deleteConfirmCancel")}
+                      </AlertDialogCancel>
+                      <AlertDialogAction onClick={handleDeleteTrades}>
+                        {t("trade-table.deleteConfirmConfirm")}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+              {config?.groupTrades !== false && selectedTrades.length >= 2 && (
+                <Button
+                  variant="outline"
+                  className="h-10 font-normal whitespace-nowrap"
+                  onClick={handleGroupTrades}
+                >
+                  {t("trade-table.groupTrades")}
+                </Button>
+              )}
+              {config?.groupTrades !== false && selectedTrades.length > 0 && (
+                <Button
+                  variant="outline"
+                  className="h-10 font-normal whitespace-nowrap"
+                  onClick={handleUngroupTrades}
+                >
+                  {t("trade-table.ungroupTrades")}
+                </Button>
+              )}
+              {config?.groupTrades !== false && (
+                <Select
+                  value={groupingGranularity.toString()}
+                  onValueChange={(value) =>
+                    handleGroupingGranularityChange(parseInt(value))
+                  }
+                >
+                  <SelectTrigger className="min-w-[180px] max-w-[250px]">
+                    <div className="flex items-center w-full">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info
+                              className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors cursor-help mr-2 shrink-0"
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="z-50">
+                            <p>{t("trade-table.granularity.tooltip")}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <SelectValue
+                        placeholder={t("trade-table.granularity.label")}
+                        className="truncate"
+                      />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">
+                      {t("trade-table.granularity.exact")}
+                    </SelectItem>
+                    <SelectItem value="5">
+                      {t("trade-table.granularity.fiveSeconds")}
+                    </SelectItem>
+                    <SelectItem value="10">
+                      {t("trade-table.granularity.tenSeconds")}
+                    </SelectItem>
+                    <SelectItem value="30">
+                      {t("trade-table.granularity.thirtySeconds")}
+                    </SelectItem>
+                    <SelectItem value="60">
+                      {t("trade-table.granularity.oneMinute")}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+              {!config?.disableColumnConfig && (
+                <ColumnConfigDialog tableId="trade-table" />
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            {selectedTrades.length > 0 && (
-              <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="destructive"
-                    className="h-10 font-normal whitespace-nowrap"
-                    onClick={() => setShowDeleteDialog(true)}
-                  >
-                    <Trash className="mr-2 h-4 w-4" />
-                    {t("trade-table.deleteSelected")}
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{t("trade-table.deleteConfirmTitle")}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {t("trade-table.deleteConfirmDescription", {
-                        count: selectedTrades.length,
-                      })}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>
-                      {t("trade-table.deleteConfirmCancel")}
-                    </AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDeleteTrades}>
-                      {t("trade-table.deleteConfirmConfirm")}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )}
-            {config?.groupTrades !== false && selectedTrades.length >= 2 && (
-              <Button
-                variant="outline"
-                className="h-10 font-normal whitespace-nowrap"
-                onClick={handleGroupTrades}
-              >
-                {t("trade-table.groupTrades")}
-              </Button>
-            )}
-            {config?.groupTrades !== false && selectedTrades.length > 0 && (
-              <Button
-                variant="outline"
-                className="h-10 font-normal whitespace-nowrap"
-                onClick={handleUngroupTrades}
-              >
-                {t("trade-table.ungroupTrades")}
-              </Button>
-            )}
-            {config?.groupTrades !== false && (
-              <Select
-                value={groupingGranularity.toString()}
-                onValueChange={(value) =>
-                  handleGroupingGranularityChange(parseInt(value))
-                }
-              >
-                <SelectTrigger className="min-w-[180px] max-w-[250px]">
-                  <div className="flex items-center w-full">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Info
-                            className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors cursor-help mr-2 shrink-0"
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="z-50">
-                          <p>{t("trade-table.granularity.tooltip")}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    <SelectValue
-                      placeholder={t("trade-table.granularity.label")}
-                      className="truncate"
-                    />
-                  </div>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0">
-                    {t("trade-table.granularity.exact")}
-                  </SelectItem>
-                  <SelectItem value="5">
-                    {t("trade-table.granularity.fiveSeconds")}
-                  </SelectItem>
-                  <SelectItem value="10">
-                    {t("trade-table.granularity.tenSeconds")}
-                  </SelectItem>
-                  <SelectItem value="30">
-                    {t("trade-table.granularity.thirtySeconds")}
-                  </SelectItem>
-                  <SelectItem value="60">
-                    {t("trade-table.granularity.oneMinute")}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-            {!config?.disableColumnConfig && (
-              <ColumnConfigDialog tableId="trade-table" />
-            )}
-          </div>
-        </div>
-      </CardHeader>
+        </CardHeader>
       )}
       <CardContent className="flex-1 min-h-0 overflow-auto p-0">
         <div className="relative w-full min-w-fit">
           <table className="w-full border-separate border-spacing-0 caption-bottom text-sm">
             <thead className="sticky top-0 z-10 bg-muted/90 backdrop-blur-xs shadow-xs border-b [&_tr]:border-b">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr
-                    key={headerGroup.id}
-                    className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
-                  >
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        className="whitespace-nowrap px-3 py-2 text-left text-sm font-semibold bg-muted/90 border-r border-border last:border-r-0 first:border-l h-12 align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0"
-                        style={{ width: header.getSize() }}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr
+                  key={headerGroup.id}
+                  className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+                >
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="whitespace-nowrap px-3 py-2 text-left text-sm font-semibold bg-muted/90 border-r border-border last:border-r-0 first:border-l h-12 align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0"
+                      style={{ width: header.getSize() }}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
 
             <tbody className="bg-background [&_tr:last-child]:border-0">
               {table.getRowModel().rows?.length ? (
@@ -1396,8 +1396,8 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
                             ? "bg-background"
                             : "bg-muted/30",
                         rowIndex % 2 === 1 &&
-                          !row.getIsSelected() &&
-                          "bg-muted/20",
+                        !row.getIsSelected() &&
+                        "bg-muted/20",
                       )}
                     >
                       {row.getVisibleCells().map((cell) => (
@@ -1424,7 +1424,22 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
                     colSpan={visibleColumns.length}
                     className="p-4 align-middle [&:has([role=checkbox])]:pr-0 h-24 text-center"
                   >
-                    No results.
+
+                    <div className="flex flex-col items-center justify-center p-8 gap-3">
+                      <p className="text-muted-foreground">{t("trade-table.noResults") || "No results."}</p>
+                      {formattedTrades.length > 0 && columnFilters.length > 0 && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setColumnFilters([]);
+                            updateColumnFilters("trade-table", []);
+                          }}
+                        >
+                          Reset Table Filters
+                        </Button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               )}
@@ -1433,7 +1448,7 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
               <tr className="border-b transition-colors">
                 {visibleColumns.map((column, index) => {
                   const columnId = column.id || (column as any).accessorKey;
-                  
+
                   // Find the first non-select/expand column for "Total" label
                   const firstDataColumnIndex = visibleColumns.findIndex(
                     (col) => {
@@ -1466,7 +1481,7 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
                         className={cn(
                           "p-4 align-middle whitespace-nowrap px-3 py-3 text-sm border-r border-border/50 last:border-r-0",
                         )}
-                      style={{ width: column.getSize() }}
+                        style={{ width: column.getSize() }}
                       />
                     );
                   }
@@ -1479,7 +1494,7 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
                         className={cn(
                           "p-4 align-middle whitespace-nowrap px-3 py-3 text-sm font-semibold text-right border-r border-border/50 last:border-r-0",
                         )}
-                      style={{ width: column.getSize() }}
+                        style={{ width: column.getSize() }}
                       >
                         <span
                           className={cn(
@@ -1499,7 +1514,7 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
                         className={cn(
                           "p-4 align-middle whitespace-nowrap px-3 py-3 text-sm font-semibold text-right border-r border-border/50 last:border-r-0",
                         )}
-                      style={{ width: column.getSize() }}
+                        style={{ width: column.getSize() }}
                       >
                         ${totals.totalCommission.toFixed(2)}
                       </td>
@@ -1513,7 +1528,7 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
                         className={cn(
                           "p-4 align-middle whitespace-nowrap px-3 py-3 text-sm font-semibold text-right border-r border-border/50 last:border-r-0",
                         )}
-                      style={{ width: column.getSize() }}
+                        style={{ width: column.getSize() }}
                       >
                         {totals.totalQuantity.toLocaleString()}
                       </td>
@@ -1607,7 +1622,7 @@ export function TradeTableReview({ tradesParam, config }: TradeTableReviewProps)
         <BulkEditPanel
           selectedTrades={selectedTrades}
           onUpdate={updateTrades}
-          onFinish={() => {}}
+          onFinish={() => { }}
           onClose={() => setShowBulkEdit(false)}
         />
       )}
