@@ -48,17 +48,25 @@ export async function getSubscriptionData() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user?.email) return null // No email, no sub
 
+    const normalizedEmail = user.email.toLowerCase().trim()
+
     // 1. Check local database for active subscription
     const localSubscription = await prisma.subscription.findUnique({
-      where: { email: user.email },
+      where: { email: normalizedEmail },
     })
 
     // OPTIMIZATION: Trust local DB if recent or active. 
     // We assume webhooks will keep us in sync for critical events (cancellation/renewal).
     // If local text is ACTIVE, we return it to avoid API latency.
 
-    if (localSubscription && localSubscription.status === 'ACTIVE') {
-      logger.debug('[getSubscriptionData] Cache Hit', { email: user.email });
+    const normalizedStatus = localSubscription?.status?.toUpperCase()
+    const hasActiveLocalSubscription =
+      normalizedStatus === 'ACTIVE' ||
+      normalizedStatus === 'TRIAL' ||
+      normalizedStatus === 'TRIALING'
+
+    if (localSubscription && hasActiveLocalSubscription) {
+      logger.debug('[getSubscriptionData] Cache Hit', { email: normalizedEmail });
 
       const interval = localSubscription.interval as any || 'month';
 
@@ -84,10 +92,10 @@ export async function getSubscriptionData() {
       } as SubscriptionWithPrice
     }
 
-    logger.info('[getSubscriptionData] Cache Miss - Fetching Whop API', { email: user.email });
+    logger.info('[getSubscriptionData] Cache Miss - Fetching Whop API', { email: normalizedEmail });
 
     if (!process.env.WHOP_API_KEY) {
-      logger.warn('[getSubscriptionData] WHOP_API_KEY missing, skipping Whop API lookup', { email: user.email })
+      logger.warn('[getSubscriptionData] WHOP_API_KEY missing, skipping Whop API lookup', { email: normalizedEmail })
       return null
     }
 
@@ -97,7 +105,7 @@ export async function getSubscriptionData() {
     // 2. Fetch active memberships from Whop for real-time verification (Fallback)
     const members = await whop.members.list({
       company_id: companyId,
-      query: user.email,
+      query: normalizedEmail,
     });
 
     if (members.data.length === 0) {
@@ -140,20 +148,29 @@ export async function getSubscriptionData() {
       ? Math.floor(new Date(membership.renewal_period_end).getTime() / 1000)
       : Math.floor(new Date(membership.created_at).getTime() / 1000) + 30 * 24 * 60 * 60; // Default 30 days
 
+    const whopStatus = membership.status.toLowerCase()
+    const dbStatus =
+      whopStatus === 'active'
+        ? 'ACTIVE'
+        : whopStatus === 'trialing'
+          ? 'TRIAL'
+          : whopStatus.toUpperCase()
+
     // Sync to local DB
     await prisma.subscription.upsert({
       where: { userId: user.id },
       update: {
-        status: membership.status,
+        email: normalizedEmail,
+        status: dbStatus,
         plan: planName,
         endDate: membership.renewal_period_end ? new Date(membership.renewal_period_end) : null,
         interval: interval
       },
       create: {
         userId: user.id,
-        email: user.email,
+        email: normalizedEmail,
         plan: planName,
-        status: membership.status,
+        status: dbStatus,
         endDate: membership.renewal_period_end ? new Date(membership.renewal_period_end) : null,
         interval: interval
       }
@@ -161,7 +178,7 @@ export async function getSubscriptionData() {
 
     return {
       id: membership.id,
-      status: membership.status,
+      status: dbStatus,
       current_period_end: periodEnd,
       current_period_start: created,
       created: created,

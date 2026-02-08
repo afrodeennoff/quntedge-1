@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { createClient } from '@/lib/supabase'
-import type { User } from '@supabase/supabase-js'
 
 export interface SubscriptionInfo {
   isActive: boolean
@@ -35,7 +34,7 @@ export function useSubscription() {
   const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const supabase = createClient()
+  const supabase = useMemo(() => createClient(), [])
 
   useEffect(() => {
     let mounted = true
