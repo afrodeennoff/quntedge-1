@@ -143,15 +143,15 @@ export default function DashboardBehaviorPage() {
   const recommendationList = insights?.recommendations ?? []
 
   return (
-    <div className="w-full p-4 md:p-6 space-y-6">
-      <Card className="border-white/10 bg-gradient-to-r from-teal-500/10 via-cyan-500/5 to-blue-500/10">
+    <div className="w-full space-y-6 p-3 sm:p-4 lg:p-6">
+      <Card className="rounded-3xl border border-border/60 bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-sky-500/10 shadow-sm backdrop-blur-sm">
         <CardHeader className="pb-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Brain className="h-5 w-5 text-teal-400" />
+                <Brain className="h-5 w-5 text-emerald-500" />
                 <CardTitle className="text-xl md:text-2xl">Behavior AI Hub</CardTitle>
-                <Badge variant="secondary" className="border-teal-400/30 text-teal-300">
+                <Badge variant="secondary" className="border-emerald-500/30 text-emerald-600 dark:text-emerald-300">
                   <Sparkles className="mr-1 h-3.5 w-3.5" />
                   AI
                 </Badge>
@@ -241,19 +241,19 @@ export default function DashboardBehaviorPage() {
             ) : null}
           </div>
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-lg border border-white/10 bg-background/40 p-3">
+            <div className="rounded-xl border border-border/70 bg-background/70 p-3">
               <p className="text-xs text-muted-foreground">Trades</p>
               <p className="text-lg font-semibold">{insights?.summary.tradeCount ?? 0}</p>
             </div>
-            <div className="rounded-lg border border-white/10 bg-background/40 p-3">
+            <div className="rounded-xl border border-border/70 bg-background/70 p-3">
               <p className="text-xs text-muted-foreground">Win Rate</p>
               <p className="text-lg font-semibold">{insights?.summary.winRate ?? 0}%</p>
             </div>
-            <div className="rounded-lg border border-white/10 bg-background/40 p-3">
+            <div className="rounded-xl border border-border/70 bg-background/70 p-3">
               <p className="text-xs text-muted-foreground">Stress Score</p>
               <p className="text-lg font-semibold">{insights?.summary.stressScore ?? 0}/100</p>
             </div>
-            <div className="rounded-lg border border-white/10 bg-background/40 p-3">
+            <div className="rounded-xl border border-border/70 bg-background/70 p-3">
               <p className="text-xs text-muted-foreground">Discipline Streak</p>
               <p className="text-lg font-semibold">{insights?.summary.disciplineStreakDays ?? 0} days</p>
             </div>
@@ -265,14 +265,14 @@ export default function DashboardBehaviorPage() {
       </Card>
 
       <Tabs defaultValue="insights" className="space-y-4">
-        <TabsList>
+        <TabsList className="h-auto rounded-2xl border border-border/70 bg-card/70 p-1">
           <TabsTrigger value="insights">Insights</TabsTrigger>
           <TabsTrigger value="workspace">Workspace</TabsTrigger>
         </TabsList>
 
         <TabsContent value="insights" className="space-y-4">
           <section className="grid gap-4 lg:grid-cols-3">
-            <Card className="border-white/10 bg-card/40 lg:col-span-2">
+            <Card className="border-border/70 bg-card/75 lg:col-span-2">
               <CardHeader>
                 <CardTitle className="text-base">Behavior Health</CardTitle>
               </CardHeader>
@@ -296,7 +296,7 @@ export default function DashboardBehaviorPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-white/10 bg-card/40">
+            <Card className="border-border/70 bg-card/75">
               <CardHeader>
                 <CardTitle className="text-base">Live Prompt</CardTitle>
               </CardHeader>
@@ -313,20 +313,20 @@ export default function DashboardBehaviorPage() {
           </section>
 
           <section className="grid gap-4 lg:grid-cols-2">
-            <Card className="border-white/10 bg-card/40">
+            <Card className="border-border/70 bg-card/75">
               <CardHeader>
                 <CardTitle className="text-base">Training & Reflection</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {trainingModules.map((module) => (
-                  <div key={module.title} className="rounded-lg border border-white/10 p-3">
+                  <div key={module.title} className="rounded-xl border border-border/70 bg-background/60 p-3">
                     <p className="text-sm font-medium">{module.title}</p>
                     <p className="text-xs text-muted-foreground">{module.description}</p>
                     <Badge variant="secondary" className="mt-2">{module.metric}</Badge>
                   </div>
                 ))}
                 {reflectionModules.map((module) => (
-                  <div key={module.title} className="flex items-center justify-between rounded-lg border border-white/10 p-3 text-sm">
+                  <div key={module.title} className="flex items-center justify-between rounded-xl border border-border/70 bg-background/60 p-3 text-sm">
                     <span className="text-muted-foreground">{module.metric}</span>
                     <span className="font-medium">{module.value}</span>
                   </div>
@@ -334,13 +334,13 @@ export default function DashboardBehaviorPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-white/10 bg-card/40">
+            <Card className="border-border/70 bg-card/75">
               <CardHeader>
                 <CardTitle className="text-base">Achievements & Guidance</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {gamificationModules.map((module) => (
-                  <div key={module.badge} className="rounded-lg border border-white/10 p-3">
+                  <div key={module.badge} className="rounded-xl border border-border/70 bg-background/60 p-3">
                     <p className="text-sm font-medium flex items-center gap-2">
                       {module.achieved ? (
                         <CircleCheck className="h-4 w-4 text-emerald-400" />
@@ -352,7 +352,7 @@ export default function DashboardBehaviorPage() {
                     <p className="text-xs text-muted-foreground">{module.detail}</p>
                   </div>
                 ))}
-                <div className="rounded-lg border border-white/10 p-3">
+                <div className="rounded-xl border border-border/70 bg-background/60 p-3">
                   <p className="text-sm font-medium mb-1">Risk Guard</p>
                   <p className="text-xs text-muted-foreground">{insights?.prompts.riskGuard}</p>
                 </div>
@@ -361,9 +361,9 @@ export default function DashboardBehaviorPage() {
           </section>
 
           {recommendationList.length > 0 ? (
-            <section className="rounded-2xl border border-white/10 bg-card/40 p-4 md:p-6">
+            <section className="rounded-2xl border border-border/70 bg-card/75 p-4 md:p-6">
               <div className="mb-3 flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-teal-400" />
+                <Sparkles className="h-4 w-4 text-emerald-500" />
                 <h3 className="text-base font-semibold">AI Recommendations</h3>
               </div>
               <div className="space-y-2">
@@ -378,11 +378,11 @@ export default function DashboardBehaviorPage() {
         </TabsContent>
 
         <TabsContent value="workspace" className="space-y-4">
-          <section id="analysis-section" className="rounded-2xl border border-white/10 bg-card/40 p-4 md:p-6">
+          <section id="analysis-section" className="rounded-2xl border border-border/70 bg-card/75 p-4 md:p-6">
             <AnalysisOverview />
           </section>
 
-          <section id="coach-section" className="rounded-2xl border border-white/10 bg-card/40 p-4 md:p-6">
+          <section id="coach-section" className="rounded-2xl border border-border/70 bg-card/75 p-4 md:p-6">
             <div className="mb-4 flex items-center gap-2">
               <Bot className="h-5 w-5 text-primary" />
               <h2 className="text-lg font-semibold">AI Trading Coach</h2>
@@ -392,7 +392,7 @@ export default function DashboardBehaviorPage() {
             </div>
           </section>
 
-          <section id="mindset-section" className="rounded-2xl border border-white/10 bg-card/40 p-4 md:p-6">
+          <section id="mindset-section" className="rounded-2xl border border-border/70 bg-card/75 p-4 md:p-6">
             <div className="mb-4 flex items-center gap-2">
               <MessageSquareText className="h-5 w-5 text-primary" />
               <h2 className="text-lg font-semibold">Mindset & Journal</h2>

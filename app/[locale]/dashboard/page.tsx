@@ -24,26 +24,32 @@ export default function Home() {
   const activeTab = searchParams.get("tab") || "widgets";
 
   return (
-    <div className="w-full h-full relative">
+    <div className="relative w-full min-h-[calc(100vh-72px)] p-3 sm:p-4 lg:p-6">
       <Tabs value={activeTab} className="w-full h-full relative z-10">
 
 
-        <TabsContent value="table" className="h-[calc(100vh-120px)] p-4 mt-2">
-          <div className="w-full h-full glass rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
+        <TabsContent value="table" className="mt-0 h-[calc(100vh-112px)] rounded-3xl border border-border/60 bg-card/75 p-3 shadow-sm backdrop-blur-sm sm:p-4">
+          <div className="h-full w-full overflow-hidden rounded-2xl border border-border/70 bg-background/70">
             <TradeTableReview />
           </div>
         </TabsContent>
 
-        <TabsContent value="accounts" className="flex-1 mt-2 p-4">
-          <AccountsOverview size="large" />
+        <TabsContent value="accounts" className="mt-0 rounded-3xl border border-border/60 bg-card/75 p-3 shadow-sm backdrop-blur-sm sm:p-4">
+          <div className="rounded-2xl border border-border/70 bg-background/70 p-3 sm:p-4">
+            <AccountsOverview size="large" />
+          </div>
         </TabsContent>
 
-        <TabsContent value="chart" className="flex-1">
-          <ChartTheFuturePanel />
+        <TabsContent value="chart" className="mt-0 rounded-3xl border border-border/60 bg-card/75 p-3 shadow-sm backdrop-blur-sm sm:p-4">
+          <div className="rounded-2xl border border-border/70 bg-background/70 p-3 sm:p-4">
+            <ChartTheFuturePanel />
+          </div>
         </TabsContent>
 
-        <TabsContent value="widgets" className="px-4 mt-2">
-          <WidgetCanvas />
+        <TabsContent value="widgets" className="mt-0 rounded-3xl border border-border/60 bg-card/75 p-3 shadow-sm backdrop-blur-sm sm:p-4">
+          <div className="rounded-2xl border border-border/70 bg-background/70 p-3 sm:p-4">
+            <WidgetCanvas />
+          </div>
         </TabsContent>
       </Tabs>
     </div>
