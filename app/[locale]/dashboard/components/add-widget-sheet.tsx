@@ -146,11 +146,13 @@ export const AddWidgetSheet = forwardRef<HTMLButtonElement, AddWidgetSheetProps>
     const onWidgetLoaded = useCallback((index: number) => {
       setLoadedItems(prev => {
         const newSet = new Set(prev)
+        if (newSet.has(index)) return prev // Avoid redundant updates
         newSet.add(index)
 
-        // Load next batch when current batch is loaded
-        if (newSet.size > 0 && newSet.size % 3 === 0) {
-          const nextBatch = Array.from({ length: 3 }, (_, i) => newSet.size + i)
+        // Only load next batch when the last item of the current batch is loaded
+        if ((index + 1) % 3 === 0) {
+          const nextStart = index + 1
+          const nextBatch = Array.from({ length: 3 }, (_, i) => nextStart + i)
           nextBatch.forEach(i => newSet.add(i))
         }
 

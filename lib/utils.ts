@@ -150,7 +150,17 @@ export function formatCalendarData(trades: Trade[], accounts: Account[] = []) {
 
   return trades.reduce((acc: any, trade: Trade) => {
     // Parse the date and format it in UTC to ensure consistency across timezones
-    const date = formatInTimeZone(new Date(trade.entryDate), 'UTC', 'yyyy-MM-dd')
+    let date = '';
+    try {
+      const rawDate = new Date(trade.entryDate);
+      if (!isNaN(rawDate.getTime())) {
+        date = formatInTimeZone(rawDate, 'UTC', 'yyyy-MM-dd');
+      } else {
+        return acc;
+      }
+    } catch (e) {
+      return acc;
+    }
 
     if (!acc[date]) {
       acc[date] = { pnl: 0, tradeNumber: 0, longNumber: 0, shortNumber: 0, trades: [] }

@@ -412,14 +412,24 @@ export const DataProvider: React.FC<{
       if (isSharedView) {
         const sharedData = await loadSharedData(params.slug as string);
         if (!sharedData.error) {
-          const processedSharedTrades = sharedData.trades.map((trade) => ({
-            ...trade,
-            utcDateStr: formatInTimeZone(
-              new Date(trade.entryDate),
-              timezone,
-              "yyyy-MM-dd"
-            ),
-          }));
+          const processedSharedTrades = sharedData.trades
+            .filter(trade => isValid(new Date(trade.entryDate)))
+            .map((trade) => {
+              let utcDateStr = '';
+              try {
+                utcDateStr = formatInTimeZone(
+                  new Date(trade.entryDate),
+                  timezone,
+                  "yyyy-MM-dd"
+                );
+              } catch (e) {
+                console.error("Error formatting trade date:", trade.id, e);
+              }
+              return {
+                ...trade,
+                utcDateStr,
+              };
+            });
 
           // Batch state updates
           const updates = async () => {
@@ -808,13 +818,22 @@ export const DataProvider: React.FC<{
         );
 
         // Validate entry date
-        const entryDate = new Date(
-          formatInTimeZone(
-            new Date(trade.entryDate),
-            timezone,
-            "yyyy-MM-dd HH:mm:ssXXX"
-          )
-        );
+        const rawDate = new Date(trade.entryDate);
+        if (!isValid(rawDate)) return false;
+
+        let entryDate: Date;
+        try {
+          entryDate = new Date(
+            formatInTimeZone(
+              rawDate,
+              timezone,
+              "yyyy-MM-dd HH:mm:ssXXX"
+            )
+          );
+        } catch (e) {
+          return false;
+        }
+
         if (!isValid(entryDate)) return false;
 
         // Filter trades before reset date if shouldConsiderTradesBeforeReset is false
