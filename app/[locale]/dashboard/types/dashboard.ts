@@ -1,5 +1,6 @@
 export type WidgetType =
   | 'equityChart'
+  | 'tradingViewChart'
   | 'pnlChart'
   | 'timeOfDayChart'
   | 'timeInPositionChart'

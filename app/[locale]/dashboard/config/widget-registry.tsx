@@ -23,6 +23,7 @@ type WidgetRenderOptions = {
 const widgetTitles: Record<WidgetType, string> = {
   weekdayPnlChart: "Weekday PnL",
   pnlChart: "PnL Chart",
+  tradingViewChart: "TradingView Live Chart",
   timeOfDayChart: "Time of Day",
   timeInPositionChart: "Time in Position",
   equityChart: "Equity Chart",
@@ -69,6 +70,13 @@ function PreviewSkeleton({ title }: { title: string }) {
 }
 
 export const WIDGET_REGISTRY: Record<WidgetType, WidgetConfig> = {
+  tradingViewChart: {
+    type: "tradingViewChart",
+    defaultSize: "large",
+    allowedSizes: ["small-long", "medium", "large", "extra-large"],
+    category: "charts",
+    previewHeight: 300,
+  },
   weekdayPnlChart: {
     type: "weekdayPnlChart",
     defaultSize: "medium",

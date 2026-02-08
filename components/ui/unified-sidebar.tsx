@@ -185,25 +185,24 @@ const SIDEBAR_STYLE_CLASSES: Record<
     itemButtonActive: string
     itemButtonInactive: string
     selectTrigger: string
-    collapsedMeta: string
-    collapsedLine: string
     footer: string
     logout: string
     collapse: string
+    edgeCollapse: string
   }
 > = {
   minimal: {
     sidebar: "border-r border-border/60 bg-background",
     rail: "after:bg-border/70 after:transition-colors after:duration-200 hover:bg-accent/20 hover:after:bg-primary/35",
-    header: "border-b border-border/60 px-2.5 py-2",
-    brandCard: "flex h-11 items-center gap-2.5 overflow-hidden rounded-xl border border-border/60 bg-background px-2.5",
+    header: "border-b border-border/60 px-2.5 py-2.5",
+    brandCard: "flex h-12 items-center gap-2.5 overflow-hidden rounded-xl border border-border/60 bg-background px-2.5",
     brandIcon: "flex size-8.5 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-primary/20 to-primary/5 text-primary",
     workspaceLabel: "truncate text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground/80",
     userCard:
       "mx-0.5 flex items-center gap-3 rounded-xl border border-border/60 bg-background p-2.5 transition-colors duration-200 hover:border-border",
     avatar: "size-9 border border-border/60 ring-1 ring-border/30",
     avatarFallback: "bg-muted text-[11px] font-bold uppercase text-foreground",
-    content: "custom-scrollbar flex flex-col gap-2 px-2 py-2 overflow-y-auto overflow-x-hidden",
+    content: "flex flex-col px-2 py-2 overflow-hidden",
     groupLabel: "text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground",
     groupLine: "h-px flex-1 bg-border/70",
     itemTrack: "bg-foreground/80",
@@ -214,21 +213,21 @@ const SIDEBAR_STYLE_CLASSES: Record<
     itemButtonInactive: "hover:border-border/70 hover:bg-accent/35",
     selectTrigger:
       "h-9 rounded-xl border-input/60 bg-background text-[12px] font-medium hover:border-border focus:ring-sidebar-ring",
-    collapsedMeta: "flex flex-col items-center gap-2 py-3 opacity-40",
-    collapsedLine: "h-8 w-px bg-border",
     footer: "border-t border-border/60 bg-background p-2.5",
     logout:
       "flex h-9 w-full items-center gap-3 rounded-xl px-3 text-muted-foreground transition-all duration-200 hover:bg-accent/50 hover:text-foreground group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0",
     collapse:
-      "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/50 bg-background/70 text-muted-foreground transition-all duration-200 hover:border-border hover:bg-accent/35 hover:text-foreground",
+      "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/55 bg-background/90 text-muted-foreground shadow-sm transition-all duration-200 hover:border-border hover:bg-accent/35 hover:text-foreground",
+    edgeCollapse:
+      "absolute -right-3 top-16 z-30 hidden border border-border/60 bg-background/95 shadow-sm backdrop-blur-sm md:flex",
   },
   glassy: {
     sidebar:
       "border-r border-white/10 bg-gradient-to-b from-background/95 via-background/80 to-background/70 backdrop-blur-xl",
     rail: "after:bg-white/25 after:transition-colors after:duration-200 hover:bg-primary/10 hover:after:bg-primary/45",
-    header: "border-b border-white/10 px-2.5 py-2",
+    header: "border-b border-white/10 px-2.5 py-2.5",
     brandCard:
-      "flex h-11 items-center gap-2.5 overflow-hidden rounded-xl border border-white/15 bg-white/[0.04] px-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)]",
+      "flex h-12 items-center gap-2.5 overflow-hidden rounded-xl border border-white/15 bg-white/[0.04] px-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)]",
     brandIcon:
       "flex size-8.5 shrink-0 items-center justify-center rounded-xl border border-primary/30 bg-gradient-to-br from-primary/25 to-primary/10 text-primary",
     workspaceLabel: "truncate text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground/85",
@@ -236,7 +235,7 @@ const SIDEBAR_STYLE_CLASSES: Record<
       "mx-0.5 flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.03] p-2.5 transition-colors duration-200 hover:border-white/25",
     avatar: "size-9 border border-white/15 ring-1 ring-white/10",
     avatarFallback: "bg-primary/20 text-[11px] font-bold uppercase text-primary",
-    content: "custom-scrollbar flex flex-col gap-2 px-2 py-2 overflow-y-auto overflow-x-hidden",
+    content: "flex flex-col px-2 py-2 overflow-hidden",
     groupLabel: "text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/75",
     groupLine: "h-px flex-1 bg-white/15",
     itemTrack: "bg-primary",
@@ -249,13 +248,13 @@ const SIDEBAR_STYLE_CLASSES: Record<
     itemButtonInactive: "hover:border-white/20 hover:bg-white/[0.04]",
     selectTrigger:
       "h-9 rounded-xl border-white/20 bg-white/[0.03] text-[12px] font-medium hover:border-white/30 focus:ring-sidebar-ring",
-    collapsedMeta: "flex flex-col items-center gap-2 py-3 opacity-30",
-    collapsedLine: "h-8 w-px bg-gradient-to-b from-white/35 to-transparent",
     footer: "border-t border-white/10 bg-background/75 p-2.5 backdrop-blur-sm",
     logout:
       "flex h-9 w-full items-center gap-3 rounded-xl px-3 text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0",
     collapse:
-      "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/20 bg-white/[0.03] text-muted-foreground transition-all duration-200 hover:border-white/30 hover:bg-white/[0.06] hover:text-foreground",
+      "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/[0.06] text-muted-foreground shadow-[0_10px_20px_rgba(0,0,0,0.2)] transition-all duration-200 hover:border-white/30 hover:bg-white/[0.12] hover:text-foreground",
+    edgeCollapse:
+      "absolute -right-3 top-16 z-30 hidden border border-white/20 bg-background/90 shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur-sm md:flex",
   },
 }
 
@@ -275,7 +274,8 @@ const SidebarItem = React.memo(({
   const isDisabled = Boolean(item.disabled)
   const isLink = Boolean(item.href) && !isDisabled
   const styles = SIDEBAR_STYLE_CLASSES[styleVariant]
-  const hoverAnimation = !reduceMotion && !isDisabled ? { x: 1.5 } : undefined
+  const hoverAnimation =
+    !reduceMotion && !isDisabled && state === "expanded" ? { x: 1 } : undefined
   const tapAnimation = !reduceMotion && !isDisabled ? { scale: 0.995 } : undefined
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -300,13 +300,13 @@ const SidebarItem = React.memo(({
       <motion.div
         className={cn(
           "relative flex size-7 shrink-0 items-center justify-center rounded-lg border transition-all duration-200 transform-gpu",
-          active ? cn(styles.itemIconActive, "scale-110") : styles.itemIconInactive,
+          active ? styles.itemIconActive : styles.itemIconInactive,
           isDisabled && "opacity-70"
         )}
         animate={
           reduceMotion
             ? undefined
-            : { scale: active ? 1.06 : 1 }
+            : { scale: active ? 1.02 : 1 }
         }
         transition={reduceMotion ? undefined : subtleSpring}
       >
@@ -328,7 +328,11 @@ const SidebarItem = React.memo(({
           active ? "font-semibold text-primary" : "text-muted-foreground group-hover/item:text-foreground",
           isDisabled && "text-muted-foreground/70"
         )}
-        animate={reduceMotion ? undefined : { x: active ? 0.9 : 0 }}
+        animate={
+          reduceMotion || state === "collapsed"
+            ? undefined
+            : { x: active ? 0.5 : 0 }
+        }
         transition={reduceMotion ? undefined : { duration: 0.16, ease: "easeOut" }}
       >
         {label}
@@ -404,12 +408,12 @@ export function UnifiedSidebar({
   return (
     <Sidebar
       collapsible="icon"
-      className={cn(styles.sidebar, "transition-colors duration-300")}
+      className={cn(styles.sidebar, "relative transition-colors duration-300")}
     >
       <SidebarRail className={styles.rail} />
 
       <SidebarHeader className={styles.header}>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <motion.div
             className={cn(
               styles.brandCard,
@@ -436,21 +440,6 @@ export function UnifiedSidebar({
               </span>
             </div>
           </motion.div>
-          <motion.button
-            type="button"
-            aria-label={state === "expanded" ? "Collapse sidebar" : "Expand sidebar"}
-            onClick={toggleSidebar}
-            className={styles.collapse}
-            whileHover={shouldReduceMotion ? undefined : { x: 0.5 }}
-            whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-            transition={shouldReduceMotion ? undefined : subtleSpring}
-          >
-            {state === "expanded" ? (
-              <ChevronsLeft className="size-4" />
-            ) : (
-              <ChevronsRight className="size-4" />
-            )}
-          </motion.button>
         </div>
 
         {user && state === "expanded" && (
@@ -489,8 +478,24 @@ export function UnifiedSidebar({
         )}
       </SidebarHeader>
 
+      <motion.button
+        type="button"
+        aria-label={state === "expanded" ? "Collapse sidebar" : "Expand sidebar"}
+        onClick={toggleSidebar}
+        className={cn(styles.collapse, styles.edgeCollapse)}
+        whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
+        whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+        transition={shouldReduceMotion ? undefined : subtleSpring}
+      >
+        {state === "expanded" ? (
+          <ChevronsLeft className="size-3.5" />
+        ) : (
+          <ChevronsRight className="size-3.5" />
+        )}
+      </motion.button>
+
       <SidebarContent className={styles.content}>
-        <div className="flex flex-col gap-2">
+        <div className="flex h-full min-h-0 flex-col gap-2">
           <motion.div
             key="main-nav"
             layout={!shouldReduceMotion}
@@ -519,17 +524,17 @@ export function UnifiedSidebar({
             </SidebarGroup>
           </motion.div>
 
-          {actions && (
-            <SidebarGroup className="p-0 pt-2">
-              <SidebarGroupContent>
-                <SidebarMenu className="gap-1">{actions}</SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          )}
+          <div className="mt-auto flex flex-col gap-2">
+            {actions && state === "expanded" && (
+              <SidebarGroup className="p-0 pt-2">
+                <SidebarGroupContent>
+                  <SidebarMenu className="gap-1">{actions}</SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
 
-          {timezone && state === "expanded" && (
-            <div className="mt-auto">
-              <SidebarGroup className="mt-auto p-0 pt-3">
+            {timezone && state === "expanded" && (
+              <SidebarGroup className="p-0 pt-1.5">
                 <SidebarGroupContent>
                   <SidebarMenu className="gap-1">
                     <SidebarMenuItem>
@@ -554,20 +559,8 @@ export function UnifiedSidebar({
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>
-            </div>
-          )}
-
-          {state === "collapsed" && (
-            <div className={styles.collapsedMeta}>
-              <div className={styles.collapsedLine} />
-              <span
-                className="text-[9px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
-                style={{ writingMode: "vertical-rl" }}
-              >
-                Menu
-              </span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </SidebarContent>
 
