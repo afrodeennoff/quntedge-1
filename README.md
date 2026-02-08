@@ -154,7 +154,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
 # Database
-DATABASE_URL=your_postgresql_connection_string
+# Runtime (Vercel): Supabase transaction pooler URL (port 6543)
+DATABASE_URL=your_postgresql_transaction_pooler_url
+# Migrations only: direct/session connection URL
+DIRECT_URL=your_postgresql_direct_url
+# Serverless safety defaults
+PG_POOL_MAX=2
+PG_POOL_IDLE_TIMEOUT_MS=10000
+PG_POOL_CONNECT_TIMEOUT_MS=15000
 
 # OpenAI
 OPENAI_API_KEY=your_openai_api_key
