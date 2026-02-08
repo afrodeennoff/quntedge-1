@@ -1,62 +1,76 @@
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+'use client'
+
+import { motion, Variants } from 'framer-motion';
 
 interface CTAProps {
-  onStart: () => void
+  onStart: () => void;
 }
 
-export default function CTA({ onStart }: CTAProps) {
+const CTA: React.FC<CTAProps> = ({ onStart }) => {
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+      }
+    },
+  };
+
   return (
-    <section className="py-fluid-xl">
-      <div className="container-fluid">
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-card/90 via-card/80 to-card/65 px-6 py-10 sm:px-10 sm:py-12"
+    <section className="py-32 px-6 relative overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-500/5 blur-[100px] rounded-full pointer-events-none" />
+
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        className="max-w-4xl mx-auto text-center relative z-10"
+      >
+        <motion.h2
+          variants={itemVariants}
+          className="text-4xl md:text-6xl font-semibold tracking-tighter mb-8 text-white"
         >
-          <div className="pointer-events-none absolute -right-24 -top-16 h-64 w-64 rounded-full bg-primary/15 blur-[90px]" />
-          <div className="pointer-events-none absolute -left-20 bottom-0 h-56 w-56 rounded-full bg-sky-500/15 blur-[100px]" />
-
-          <div className="relative z-10 text-center">
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary">Ready To Upgrade Your Process</p>
-            <h2 className="mt-3 text-fluid-3xl font-black leading-[0.95] tracking-tight sm:text-fluid-5xl">
-              Trade With More Clarity,
-              <br />
-              <span className="text-muted-foreground">Control, And Confidence</span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm text-muted-foreground sm:text-base">
-              Start your behavior-first audit stack and discover exactly what is improving your edge and what is leaking it.
-            </p>
-
-            <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <button
-                onClick={onStart}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary via-primary to-emerald-400 px-7 text-[11px] font-black uppercase tracking-[0.16em] text-primary-foreground transition-opacity hover:opacity-90"
-              >
-                Start Your Trial
-                <ArrowRight className="h-4 w-4" />
-              </button>
-              <Link
-                href="/pricing"
-                className="inline-flex h-11 items-center justify-center rounded-xl border border-border/70 px-7 text-[11px] font-black uppercase tracking-[0.16em] text-foreground transition-colors hover:bg-muted/70"
-              >
-                Compare Plans
-              </Link>
-            </div>
-
-            <div className="mx-auto mt-5 flex max-w-2xl flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] font-black uppercase tracking-[0.16em] text-muted-foreground">
-              <span>no card required</span>
-              <span className="h-1 w-1 rounded-full bg-border" />
-              <span>setup in minutes</span>
-              <span className="h-1 w-1 rounded-full bg-border" />
-              <span>cancel anytime</span>
-            </div>
-          </div>
+          The market rewards <br />
+          <span className="text-teal-500">process, not luck.</span>
+        </motion.h2>
+        <motion.p
+          variants={itemVariants}
+          className="text-zinc-400 text-lg mb-12 max-w-xl mx-auto leading-relaxed font-normal"
+        >
+          Start identifying the behavioral leakages that are draining your account. Qunt Edge is the clinical intelligence layer for your trading career.
+        </motion.p>
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col items-center gap-6"
+        >
+          <button
+            onClick={onStart}
+            className="group relative bg-teal-500 hover:bg-teal-400 text-black text-sm px-10 py-5 rounded-full font-bold uppercase tracking-widest transition-all hover:-translate-y-1 shadow-[0_0_30px_-5px_rgba(45,212,191,0.3)] hover:shadow-[0_0_40px_-5px_rgba(45,212,191,0.5)] active:scale-95"
+          >
+            <span className="relative z-10">Apply for Early Access</span>
+            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent z-0 w-full transform skew-x-12" />
+          </button>
+          <p className="text-xs mono text-zinc-600">Limited availability to ensure quality support.</p>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
-  )
-}
+  );
+};
+
+export default CTA;

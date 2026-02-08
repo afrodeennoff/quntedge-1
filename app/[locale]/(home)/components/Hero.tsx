@@ -1,141 +1,139 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { ArrowRight, Gauge, LineChart, Radar, Sparkles, Target } from 'lucide-react'
+import React, { useRef } from 'react'
+import { motion, Variants, useScroll, useTransform } from 'framer-motion'
 
 interface HeroProps {
   onStart: () => void
 }
 
-const metrics = [
-  { label: 'Execution Quality', value: '94.1', delta: '+9.2%' },
-  { label: 'Rule Adherence', value: '97.6%', delta: '+4.8%' },
-  { label: 'Emotion Drift Alerts', value: '2', delta: '-63%' },
-]
+const Hero: React.FC<HeroProps> = ({ onStart }) => {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  })
 
-export default function Hero({ onStart }: HeroProps) {
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9])
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, 50])
+
+  const container: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  }
+
+  const item: Variants = {
+    hidden: { y: 30, opacity: 0, filter: "blur(10px)" },
+    show: {
+      y: 0,
+      opacity: 1,
+      filter: "blur(0px)",
+      transition: {
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1], // refined ease-out-quart
+      }
+    },
+  }
+
   return (
-    <section className="relative overflow-hidden pb-14 pt-28 sm:pt-34 lg:pb-18">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[-220px] h-[500px] w-[min(1080px,96vw)] -translate-x-1/2 rounded-full bg-primary/14 blur-[120px]" />
-        <div className="absolute left-[14%] top-[18%] h-56 w-56 rounded-full bg-sky-500/10 blur-[90px]" />
-        <div className="absolute right-[12%] top-[24%] h-52 w-52 rounded-full bg-emerald-400/10 blur-[90px]" />
-      </div>
+    <section ref={ref} className="relative pt-48 pb-32 px-6 overflow-hidden min-h-screen flex flex-col justify-center items-center text-center">
+      {/* Background Ambience */}
+      <motion.div style={{ opacity, y }} className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-teal-500/10 blur-[140px] rounded-full mix-blend-screen animate-pulse-slow"></div>
 
-      <div className="container-fluid relative z-10">
+        {/* Floating elements */}
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-4xl text-center"
-        >
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-gradient-to-r from-primary/15 via-primary/12 to-sky-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-primary">
-            <Sparkles className="h-3.5 w-3.5" />
-            Built For Serious Futures Traders
-          </span>
+          animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 left-1/4 w-64 h-64 bg-teal-400/5 blur-[100px] rounded-full"
+        />
+        <motion.div
+          animate={{ y: [0, 30, 0], opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-purple-500/5 blur-[120px] rounded-full"
+        />
+      </motion.div>
 
-          <h1 className="mt-5 text-fluid-4xl font-black leading-[0.92] tracking-tight sm:text-fluid-6xl lg:text-fluid-7xl">
-            Your Trading Desk,
-            <br />
-            <span className="bg-gradient-to-r from-sky-300 via-primary to-emerald-300 bg-clip-text text-transparent">
-              Powered By Execution AI
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        style={{ scale }}
+        className="max-w-7xl mx-auto relative z-10"
+      >
+        <motion.div variants={item} className="mb-8 flex justify-center">
+          <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-zinc-900/50 border border-white/5 rounded-full backdrop-blur-md hover:border-teal-500/20 transition-colors duration-500 group cursor-default">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500 shadow-[0_0_8px_#2dd4bf]"></span>
             </span>
-          </h1>
-
-          <p className="mx-auto mt-5 max-w-3xl text-base text-muted-foreground sm:text-lg">
-            Qunt Edge gives you the same operating edge top traders build manually: clean imports, live behavioral signals,
-            and AI-led reviews that expose what to fix before PnL pays the price.
-          </p>
-
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <button
-              onClick={onStart}
-              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary via-primary to-emerald-400 px-6 text-[11px] font-black uppercase tracking-[0.15em] text-primary-foreground transition-opacity hover:opacity-90 sm:w-auto"
-            >
-              Start Free Audit
-              <ArrowRight className="h-4 w-4" />
-            </button>
-
-            <Link
-              href="/pricing"
-              className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-border/70 px-6 text-[11px] font-black uppercase tracking-[0.15em] text-foreground transition-colors hover:bg-muted/70 sm:w-auto"
-            >
-              See Plans
-            </Link>
-          </div>
-
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5"><Target className="h-3.5 w-3.5 text-primary" /> Tradovate</span>
-            <span className="inline-flex items-center gap-1.5"><Target className="h-3.5 w-3.5 text-primary" /> Rithmic</span>
-            <span className="inline-flex items-center gap-1.5"><Target className="h-3.5 w-3.5 text-primary" /> IBKR</span>
-            <span className="inline-flex items-center gap-1.5"><Target className="h-3.5 w-3.5 text-primary" /> NinjaTrader</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-zinc-400 group-hover:text-zinc-300 transition-colors">Institutional Intelligence Layer</span>
           </div>
         </motion.div>
 
-        <motion.aside
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.08 }}
-          className="mx-auto mt-9 max-w-3xl rounded-2xl border border-border/70 bg-gradient-to-b from-card/90 to-card/75 p-4 shadow-[0_24px_65px_-35px_hsl(var(--primary)/0.55)] sm:p-5"
+        <motion.h1
+          variants={item}
+          className="text-7xl md:text-9xl font-bold tracking-tighter mb-8 leading-[0.85] text-white relative"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Live Desk Snapshot</p>
-              <h2 className="mt-1 text-lg font-black tracking-tight">Today's Performance Pulse</h2>
-            </div>
-            <span className="rounded-lg border border-primary/30 bg-primary/12 px-2 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-primary">
-              Real-Time
-            </span>
+          Qunt <span className="text-transparent bg-clip-text bg-gradient-to-b from-teal-400 to-teal-700 relative z-10">Edge.</span>
+          <div className="absolute inset-0 blur-3xl opacity-20 bg-gradient-to-b from-teal-400 to-teal-700 text-transparent bg-clip-text select-none pointer-events-none" aria-hidden="true">
+            Qunt Edge.
           </div>
+        </motion.h1>
 
-          <div className="grid gap-2.5 sm:grid-cols-3">
-            {metrics.map((item) => (
-              <div
-                key={item.label}
-                className="rounded-xl border border-border/70 bg-background/50 px-4 py-3 transition-all duration-150 ease-in-out hover:-translate-y-0.5 hover:border-primary/25 hover:bg-background/65 active:scale-[0.99]"
-              >
-                <span className="text-xs text-muted-foreground">{item.label}</span>
-                <div className="mt-2 flex items-end justify-between gap-2">
-                  <p className="text-base font-black leading-none">{item.value}</p>
-                  <p className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.12em] text-primary">
-                    <LineChart className="h-3 w-3" />
-                    {item.delta}
-                  </p>
-                </div>
-              </div>
+        <motion.p
+          variants={item}
+          className="text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto mb-12 leading-relaxed font-light"
+        >
+          Your AI-Powered, Data-Driven Path to Profitable Trading. <br />
+          <span className="text-zinc-500">Turn your trading data into a growth engine and eliminate costly habits.</span>
+        </motion.p>
+
+        <motion.div
+          variants={item}
+          className="flex flex-col sm:flex-row items-center justify-center gap-6"
+        >
+          <button
+            onClick={onStart}
+            className="group relative w-full sm:w-auto overflow-hidden bg-white text-black px-10 py-4 rounded-full font-bold text-xs uppercase tracking-[0.2em] transition-all hover:scale-105 hover:bg-teal-50 hover:shadow-[0_0_40px_-5px_rgba(255,255,255,0.4)]"
+          >
+            <span className="relative z-10">Start Free Audit</span>
+            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/40 to-transparent z-0 w-full transform skew-x-12" />
+          </button>
+
+          <button className="text-zinc-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-2 group px-4 py-2 rounded-full hover:bg-zinc-900/50">
+            View Documentation
+            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </button>
+        </motion.div>
+
+        <motion.div
+          variants={item}
+          className="mt-32 pt-12 border-t border-white/5 opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-1000"
+        >
+          <div className="flex flex-wrap items-center justify-center gap-12 md:gap-24 opacity-60 hover:opacity-100 transition-opacity duration-500">
+            {['TRADOVATE', 'RITHMIC', 'IBKR', 'CQG'].map((broker) => (
+              <span key={broker} className="text-xl font-black tracking-tighter text-white/40 hover:text-white/80 transition-colors cursor-default">
+                {broker}
+              </span>
             ))}
           </div>
+        </motion.div>
+      </motion.div>
 
-          <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
-            <div className="rounded-xl border border-primary/25 bg-primary/10 px-4 py-3">
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-primary">AI Insight</p>
-              <p className="mt-1 text-sm text-foreground/90">
-                Sessions with a defined pre-open checklist show <span className="font-black text-primary">31% tighter risk dispersion</span> in the last 30 days.
-              </p>
-            </div>
-            <div className="rounded-xl border border-sky-500/25 bg-sky-500/10 px-4 py-3">
-              <p className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-sky-300">
-                <Gauge className="h-3.5 w-3.5" />
-                Focus Signal
-              </p>
-              <p className="mt-1 text-sm text-foreground/90">
-                <span className="font-black text-sky-300">09:45–10:25</span> remains your highest-conversion window by setup quality and follow-through.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-2 rounded-xl border border-emerald-400/25 bg-emerald-400/10 px-4 py-3">
-            <p className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300">
-              <Radar className="h-3.5 w-3.5" />
-              Suggestion
-            </p>
-            <p className="mt-1 text-sm text-foreground/90">
-              Use adaptive sizing after two off-plan entries to protect consistency without shutting down momentum.
-            </p>
-          </div>
-        </motion.aside>
-      </div>
+      {/* Decorative vertical lines */}
+      <div className="absolute top-0 left-12 w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"></div>
+      <div className="absolute top-0 right-12 w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"></div>
     </section>
   )
 }
+
+export default Hero

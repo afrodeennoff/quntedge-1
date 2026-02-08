@@ -403,7 +403,7 @@ export function UnifiedSidebar({
   return (
     <Sidebar
       collapsible="icon"
-      className={cn(styles.sidebar, "relative transition-colors duration-300")}
+      className={cn(styles.sidebar, "transition-colors duration-300")}
     >
       <SidebarRail className={styles.rail} />
 
@@ -438,40 +438,7 @@ export function UnifiedSidebar({
           </motion.div>
         </div>
 
-        {user && state === "expanded" && (
-          <motion.div
-            className={styles.userCard}
-            initial={shouldReduceMotion ? undefined : { opacity: 0, y: 8 }}
-            animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={shouldReduceMotion ? undefined : subtleSpring}
-            whileHover={
-              shouldReduceMotion
-                ? undefined
-                : { y: -1, scale: 1.005 }
-            }
-          >
-            <Avatar className={styles.avatar}>
-              <AvatarImage src={user.avatar_url} />
-              <AvatarFallback className={styles.avatarFallback}>
-                {initials}
-              </AvatarFallback>
-            </Avatar>
 
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center justify-between gap-2">
-                <span className="truncate text-[13px] font-semibold text-foreground">
-                  {displayName}
-                </span>
-                {showSubscription && (
-                  <SubscriptionBadge className="origin-right scale-90 shadow-none" />
-                )}
-              </div>
-              <span className="block truncate text-[10px] text-zinc-500 font-mono">
-                ID: #8821-X
-              </span>
-            </div>
-          </motion.div>
-        )}
       </SidebarHeader>
 
       <motion.button
@@ -589,6 +556,41 @@ export function UnifiedSidebar({
 
       <SidebarFooter className={styles.footer}>
         <div className="flex flex-col gap-1.5">
+          {user && state === "expanded" && (
+            <motion.div
+              className={styles.userCard}
+              initial={shouldReduceMotion ? undefined : { opacity: 0, y: 8 }}
+              animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={shouldReduceMotion ? undefined : subtleSpring}
+              whileHover={
+                shouldReduceMotion
+                  ? undefined
+                  : { y: -1, scale: 1.005 }
+              }
+            >
+              <Avatar className={styles.avatar}>
+                <AvatarImage src={user.avatar_url} />
+                <AvatarFallback className={styles.avatarFallback}>
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="truncate text-[13px] font-semibold text-foreground">
+                    {displayName}
+                  </span>
+                  {showSubscription && (
+                    <SubscriptionBadge className="origin-right scale-90 shadow-none" />
+                  )}
+                </div>
+                <span className="block truncate text-[10px] text-zinc-500 font-mono">
+                  ID: #8821-X
+                </span>
+              </div>
+            </motion.div>
+          )}
+
           {onLogout && (
             <motion.button
               type="button"

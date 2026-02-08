@@ -7,6 +7,7 @@ import Hero from './Hero'
 
 const Features = dynamic(() => import('./Features'))
 const AnalysisDemo = dynamic(() => import('./AnalysisDemo'))
+const HowItWorks = dynamic(() => import('./HowItWorks'))
 const CTA = dynamic(() => import('./CTA'))
 
 export default function HomeContent() {
@@ -30,7 +31,7 @@ export default function HomeContent() {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <Features />
+          <AnalysisDemo />
         </motion.div>
 
         <motion.div
@@ -39,7 +40,16 @@ export default function HomeContent() {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.05 }}
         >
-          <AnalysisDemo />
+          <Features />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <HowItWorks />
         </motion.div>
 
         <CTA onStart={handleLogin} />

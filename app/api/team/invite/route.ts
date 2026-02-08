@@ -1,22 +1,14 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
-import { PrismaClient } from "@/prisma/generated/prisma"
-import { PrismaPg } from "@prisma/adapter-pg"
-import pg from "pg"
 import { Resend } from 'resend'
 import { createClient } from '@/server/auth'
 import TeamInvitationEmail from '@/components/emails/team-invitation'
 import { render } from "@react-email/render"
+import { prisma } from "@/lib/prisma"
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
-  const pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
-  })
-
-  const adapter = new PrismaPg(pool)
-  const prisma = new PrismaClient({ adapter })
   if (!process.env.RESEND_API_KEY) {
     console.error('RESEND_API_KEY is missing')
     return NextResponse.json({ error: 'Missing API key' }, { status: 500 })
@@ -29,7 +21,6 @@ export async function POST(req: Request) {
     const schema = z.object({
       teamId: z.string(),
       email: z.string().email(),
-      inviterId: z.string(),
     })
 
     const parseResult = schema.safeParse(body)
@@ -38,30 +29,62 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid input', details: parseResult.error.format() }, { status: 400 })
     }
 
-    const { teamId, email, inviterId } = parseResult.data
+    const { teamId, email } = parseResult.data
 
-    console.log('Debug - Team ID:', teamId)
-    console.log('Debug - Trader Email:', email)
-    console.log('Debug - Inviter ID:', inviterId)
-
-    if (!teamId || !email || !inviterId) {
+    if (!teamId || !email) {
       return NextResponse.json(
-        { error: 'Team ID, email, and inviter ID are required' },
+        { error: 'Team ID and email are required' },
         { status: 400 }
       )
     }
 
-    // Check if user is the owner or admin of this team
-    const team = await prisma.team.findUnique({
-      where: { id: teamId },
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user?.id || !user.email) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const inviter = await prisma.user.findUnique({
+      where: { auth_user_id: user.id },
+      select: { id: true, email: true },
     })
 
-    console.log('Debug - Team:', team)
+    if (!inviter) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const team = await prisma.team.findUnique({
+      where: { id: teamId },
+      include: {
+        managers: {
+          where: {
+            managerId: inviter.id,
+            access: 'admin',
+          },
+          select: { id: true },
+        },
+      },
+    })
 
     if (!team) {
       return NextResponse.json(
         { error: 'Team not found' },
         { status: 404 }
+      )
+    }
+
+    const isOwner = team.userId === inviter.id
+    const isAdminManager = team.managers.length > 0
+    if (!isOwner && !isAdminManager) {
+      return NextResponse.json(
+        { error: 'Forbidden' },
+        { status: 403 }
       )
     }
 
@@ -105,24 +128,20 @@ export async function POST(req: Request) {
       update: {
         status: 'PENDING',
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-        invitedBy: inviterId,
+        invitedBy: inviter.id,
       },
       create: {
         teamId,
         email,
-        invitedBy: inviterId,
+        invitedBy: inviter.id,
         status: 'PENDING',
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       },
     })
 
-    // Get inviter information
-    const inviter = await prisma.user.findUnique({
-      where: { id: inviterId },
-    })
-
     // Generate join URL
-    const joinUrl = `${process.env.NEXT_PUBLIC_APP_URL}/teams/join?invitation=${invitation.id}`
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(req.url).origin
+    const joinUrl = `${appUrl}/teams/join?invitation=${invitation.id}`
 
     // Render email
     const emailHtml = await render(

@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     const result = await webhookService.processWebhook(event);
 
-    if (result.success) {
+    if (result.success || result.alreadyProcessed) {
         return NextResponse.json({ message: "Received" }, { status: 200 });
     } else {
         return NextResponse.json(

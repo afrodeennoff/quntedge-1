@@ -61,6 +61,51 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            framework: {
+              name: 'framework',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+              priority: 40,
+              enforce: true,
+            },
+            lib: {
+              test: /[\\/]node_modules[\\/]/,
+              name(module: any) {
+                const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)
+                if (match) {
+                  const packageName = match[1]
+                  if (packageName === '@radix-ui') return 'radix-ui'
+                  if (packageName.startsWith('d3')) return 'd3'
+                  return 'vendor'
+                }
+                return 'vendor'
+              },
+              priority: 30,
+              minChunks: 1,
+              reuseExistingChunk: true,
+            },
+            common: {
+              name: 'common',
+              minChunks: 2,
+              priority: 20,
+              reuseExistingChunk: true,
+              enforce: true,
+            },
+          },
+        },
+      }
+    }
+    return config
+  },
 }
 
 const withMDX = createMDX({

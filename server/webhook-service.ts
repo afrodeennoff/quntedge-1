@@ -19,6 +19,7 @@ interface WebhookProcessingResult {
   success: boolean
   eventType: string
   processed: boolean
+  alreadyProcessed?: boolean
   error?: string
 }
 
@@ -60,26 +61,26 @@ export class WebhookService {
   }
 
   async processWebhook(event: WebhookEvent): Promise<WebhookProcessingResult> {
-    const eventId = event.id
+    const queueKey = `${event.id}:${event.type}`
 
-    if (this.processingQueue.has(eventId)) {
-      logger.info('[WebhookService] Event already being processed', { eventId })
+    if (this.processingQueue.has(queueKey)) {
+      logger.info('[WebhookService] Event already being processed', { eventId: event.id, eventType: event.type })
       return {
-        success: false,
+        success: true,
         eventType: event.type,
         processed: false,
-        error: 'Event already being processed',
+        alreadyProcessed: true,
       }
     }
 
     const processingPromise = this.processEvent(event)
-    this.processingQueue.set(eventId, processingPromise)
+    this.processingQueue.set(queueKey, processingPromise)
 
     try {
       const result = await processingPromise
       return result
     } finally {
-      this.processingQueue.delete(eventId)
+      this.processingQueue.delete(queueKey)
     }
   }
 
@@ -89,8 +90,23 @@ export class WebhookService {
     })
     const adapter = new PrismaPg(pool)
     const prisma = new PrismaClient({ adapter })
+    let lockAcquired = false
 
     try {
+      lockAcquired = await this.acquireWebhookLock(prisma, event)
+      if (!lockAcquired) {
+        logger.info('[WebhookService] Duplicate webhook skipped', {
+          eventType: event.type,
+          eventId: event.id,
+        })
+        return {
+          success: true,
+          eventType: event.type,
+          processed: false,
+          alreadyProcessed: true,
+        }
+      }
+
       logger.info('[WebhookService] Processing webhook event', {
         eventType: event.type,
         eventId: event.id,
@@ -106,6 +122,11 @@ export class WebhookService {
         error: result.error,
       })
 
+      if (result.success) {
+        await this.finalizeWebhookLock(prisma, event, result)
+      } else {
+        await this.releaseWebhookLock(prisma, event)
+      }
       return result
     } catch (error) {
       logger.error('[WebhookService] Event processing failed', {
@@ -113,6 +134,10 @@ export class WebhookService {
         eventId: event.id,
         error: error instanceof Error ? error.message : 'Unknown error',
       })
+
+      if (lockAcquired) {
+        await this.releaseWebhookLock(prisma, event)
+      }
 
       await this.logWebhookEvent({
         eventId: event.id,
@@ -131,6 +156,60 @@ export class WebhookService {
     } finally {
       await pool.end()
     }
+  }
+
+  private async acquireWebhookLock(prisma: PrismaClient, event: WebhookEvent): Promise<boolean> {
+    try {
+      await prisma.processedWebhook.create({
+        data: {
+          webhookId: event.id,
+          type: event.type,
+          processedAt: new Date(),
+          metadata: JSON.stringify({
+            status: 'processing',
+          }),
+        },
+      })
+
+      return true
+    } catch (error: any) {
+      if (error?.code === 'P2002') {
+        return false
+      }
+      throw error
+    }
+  }
+
+  private async finalizeWebhookLock(
+    prisma: PrismaClient,
+    event: WebhookEvent,
+    result: WebhookProcessingResult,
+  ): Promise<void> {
+    await prisma.processedWebhook.update({
+      where: {
+        webhookId_type: {
+          webhookId: event.id,
+          type: event.type,
+        },
+      },
+      data: {
+        processedAt: new Date(),
+        metadata: JSON.stringify({
+          status: result.success ? 'completed' : 'failed',
+          processed: result.processed,
+          error: result.error ?? null,
+        }),
+      },
+    })
+  }
+
+  private async releaseWebhookLock(prisma: PrismaClient, event: WebhookEvent): Promise<void> {
+    await prisma.processedWebhook.deleteMany({
+      where: {
+        webhookId: event.id,
+        type: event.type,
+      },
+    })
   }
 
   private async handleEventByType(
@@ -725,7 +804,7 @@ export async function POST(req: NextRequest) {
 
   const result = await webhookService.processWebhook(event)
 
-  if (result.success) {
+  if (result.success || result.alreadyProcessed) {
     return NextResponse.json({ message: 'Received' }, { status: 200 })
   } else {
     return NextResponse.json(
